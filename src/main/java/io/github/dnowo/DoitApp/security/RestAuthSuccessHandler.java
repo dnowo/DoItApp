@@ -34,7 +34,7 @@ public class RestAuthSuccessHandler extends SimpleUrlAuthenticationSuccessHandle
                 .withSubject(authenticationPrincipal.getUsername())
                 .withExpiresAt(new Date(System.currentTimeMillis() + tokenExpirationTime))
                 .sign(Algorithm.HMAC256(secret));
-        //response.getOutputStream().print("{\"token\": \""+ jToken + "\"}");
+        response.getOutputStream().print(jToken);
         response.addHeader("Authorization", "Bearer " + jToken);
     }
 }
