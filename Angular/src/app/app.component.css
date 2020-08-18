@@ -1,0 +1,25 @@
+header {
+  color: white;
+}
+button {
+  color: black;
+}
+.font-gothic {
+  font-family: Century Gothic,CenturyGothic,AppleGothic, sans-serif;
+}
+table, caption, main, input {
+  color: gainsboro;
+}
+thead{
+  border: 1px solid #fff!important;
+}
+.open ul.dropdown-menu {
+  display: block;
+}
+.dropdown-left-manual {
+  right: 0;
+  left: auto;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+

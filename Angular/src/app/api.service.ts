@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,16 +12,18 @@ export class ApiService {
     password: 'doitapp'
   };
 
-  response: any;
-
   token: any;
+
+  private jobSubject = new BehaviorSubject<Job[]>([]);
+  jobObservable$ = this.jobSubject.asObservable();
+  jobs = [];
 
   constructor(private http: HttpClient) {
     this.getAccessToken(this.authRequest);
   }
 
   private generateToken(request): Observable<any> {
-    return this.http.post('http://localhost:8080/login', request, { responseType: 'text' as 'json' });
+    return this.http.post('http://localhost:8080/login', request, {responseType: 'text' as 'json'});
   }
 
   public getAccessToken(authRequest): void {
@@ -37,29 +39,43 @@ export class ApiService {
     return generatedHeader;
   }
 
-  public getAllJobs(): Observable<Job[]> {
+  public getAllJobs(): Observable<Job[]>{
     const headers = this.generateAuthorizedHeader();
-    return this.http.get<Job[]>('http://localhost:8080/api/job/all', { headers });
+    // return this.http.get<Job[]>('http://localhost:8080/api/job/all', { headers });
+    console.log('XD');
+    this.http.get<Job[]>('http://localhost:8080/api/job/all', {headers}).subscribe(j => {
+      this.jobs = j;
+      this.jobSubject.next(j);
+      console.log(j);
+    }, error => {
+      console.log(error);
+    });
+    return this.jobObservable$;
   }
 
   public getJobById(id: number): Observable<Job> {
     const headers = this.generateAuthorizedHeader();
-    return this.http.get<Job>('http://localhost:8080/api/job/' + id, { headers });
+    return this.http.get<Job>('http://localhost:8080/api/job/' + id, {headers});
   }
 
   public addJob(job: Job): Observable<Job> {
     const headers = this.generateAuthorizedHeader();
-    return this.http.post<Job>('http://localhost:8080/api/job/add', job, { headers });
+    return this.http.post<Job>('http://localhost:8080/api/job/add', job, {headers});
   }
 
   public editJob(job: Job): Observable<Job> {
     const headers = this.generateAuthorizedHeader();
-    return this.http.put<Job>('http://localhost:8080/api/job/edit', job,{ headers });
+    return this.http.put<Job>('http://localhost:8080/api/job/edit', job, {headers});
   }
 
-  public deleteJob(id: number): Observable<Job> {
+  public deleteJob(job: Job): Observable<Job> {
     const headers = this.generateAuthorizedHeader();
-    return this.http.delete<Job>('http://localhost:8080/api/job/delete/' + id, { headers });
+    const index: number = this.jobs.indexOf(job);
+    if (index !== -1) {
+      this.jobs.splice(index, 1);
+    }
+    this.jobSubject.next(this.jobs);
+    return this.http.delete<Job>('http://localhost:8080/api/job/delete/' + job.id, {headers});
   }
 
 }

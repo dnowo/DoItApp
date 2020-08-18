@@ -1,43 +1,71 @@
 <header>
-  <nav class="navbar navbar-default">
-    <div class="container-fluid">
-      <div class="navbar-header">
-        <a class="navbar-brand">
-<!--          <img src="assets/img/ngx-bootstrap.svg" class="logo">-->
-        </a>
-        <span class="navbar-brand">Angular + Bootstrap</span>
-      </div>
-      <ul class="nav navbar-nav">
-        <li class="active"><a href="#">
-          Link <span class="sr-only">(current)</span>
-        </a></li>
-        <li><a href="#">Link</a></li>
-        <li class="dropdown" dropdown> <!-- {1} -->
-          <a dropdownToggle role="button"> <!-- {2} -->
-            Dropdown <span class="caret"></span></a>
-          <ul *dropdownMenu class="dropdown-menu"> <!-- {3} -->
-            <li><a href="#">Action</a></li>
-            <li><a href="#">Another action</a></li>
-            <li><a href="#">Something else here</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Separated link</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">One more separated link</a></li>
-          </ul>
-        </li>
-      </ul>
-    </div>
-  </nav>
+  <div class="container">
+    <h1 class="text-center font-gothic">{{title}}</h1>
+  </div>
 </header>
-<p>{{title}}</p>
-<p>{{jobs}}</p>
-<button (click)="getJobs()">Get Jobs</button>
-<button (click)="getJobById(2)">Get 1st Job</button>
-<button (click)="addPost()">Add 1 post</button>
-<button (click)="editPost()">Edit post</button>
-<button (click)="deletePost()">delete post</button>
-<div (load)="getJobs()" *ngFor="let j of allJobs$ | async">
-  {{j.title}}<br />
-  {{j.description}}
-</div>
+
+<main>
+
+  <div class="container" data-ng-app="DoItApp">
+    <table class="table font-gothic">
+      <caption>
+        <h2>List of your jobs</h2>
+      </caption>
+      <thead class="table-dark">
+      <tr>
+        <th>Action</th>
+        <th>Title</th>
+        <th>Description</th>
+        <th>Deadline</th>
+        <th>Priority</th>
+        <th>Notification</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr class="dropdown" dropdown (load)="getJobs()" *ngFor="let j of allJobs$ | async" (click)="onSelect(j)">
+        <td><div class="btn-group dropdown" dropdown>
+          <button dropdownToggle role="button" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul *dropdownMenu class="dropdown-menu" role="menu">
+            <li><a href="#">Edit this job</a></li>
+            <li><a href="#">Finish this job</a></li>
+            <li class="divider"></li>
+            <li><a (click)="deleteJob(j)">Delete this job</a></li>
+          </ul>
+        </div></td>
+        <td>{{ j.title }}</td>
+        <td>{{ j.description }}</td>
+        <td>{{ j.deadline }}</td>
+        <td>{{ j.priority }}</td>
+        <td>{{ j.notification }}</td>
+
+      </tr>
+      </tbody>
+    </table>
+
+  </div>
+  <section>
+
+  </section>
+  <div *ngIf="selectedJob">
+    <h2>{{selectedJob.title}} Edit</h2>
+    <div><span>id: </span>{{selectedJob.id}}</div>
+    <div>
+      <label>name:
+        <input [(ngModel)]="selectedJob.title" placeholder="name" value="selectedJob.title"/>
+      </label>
+    </div>
+  </div>
+  <button type="button" class="btn btn-dark font-gothic" (click)="getJobs()">Get Jobs</button>
+  <!--  <button (click)="getJobById(2)">Get 1st Job</button>-->
+  <!--  <button (click)="addPost()">Add 1 post</button>-->
+  <!--  <button (click)="editPost()">Edit post</button>-->
+  <!--  <button (click)="deletePost()">delete post</button>-->
+</main>
+
+<footer>
+  <div class="container"><h5>author: Daniel Nowosielecki</h5></div>
+</footer>
 <router-outlet></router-outlet>

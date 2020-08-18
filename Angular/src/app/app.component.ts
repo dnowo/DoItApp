@@ -8,11 +8,11 @@ import {Observable} from 'rxjs';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent {
+export class AppComponent{
   title = 'DoItApp';
   jobs: any;
   job: Array<Job>;
-
+  selectedJob: Job;
   allJobs$: Observable<Job[]>;
 
   constructor(private service: ApiService) {
@@ -29,8 +29,9 @@ export class AppComponent {
     // this.service.getAllJobs().subscribe(j => this.job = j, (error: HttpErrorResponse) => {
     //   console.log(error.status, error.headers);
     // });
-    this.allJobs$ = this.service.getAllJobs();
+    // this.allJobs$ = this.service.getAllJobs();
     // console.log(this.job.filter(job => job.id === 2));
+    this.allJobs$ = this.service.getAllJobs();
   }
 
   getJobById(id: number): void {
@@ -41,7 +42,7 @@ export class AppComponent {
 
   }
 
-  addPost(): void {
+  addJob(): void {
     const job: Job = ({
       id: null,
       title: 'Nowa praca Angular!',
@@ -54,7 +55,7 @@ export class AppComponent {
     this.service.addJob(job).subscribe(jobs => console.log(jobs));
   }
 
-  editPost(): void {
+  editJob(): void {
     const job: Job = ({
       id: 3,
       title: 'Edytowana praca Angular!',
@@ -67,8 +68,12 @@ export class AppComponent {
     this.service.editJob(job).subscribe(edited => console.log(edited));
   }
 
-  deletePost(): void {
-    this.service.deleteJob(1).subscribe(deleted => console.log(deleted));
+  deleteJob(job: Job): void {
+    this.service.deleteJob(job).subscribe(deleted => console.log(deleted));
+  }
+
+  onSelect(j: Job): void {
+    this.selectedJob = j;
   }
 }
 
