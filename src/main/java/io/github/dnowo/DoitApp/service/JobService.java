@@ -47,4 +47,5 @@ public class JobService {
     public Job getJobById(Long id) {
         return jobRepository.getJobById(id);
     }
+
 }

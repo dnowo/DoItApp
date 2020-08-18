@@ -31,7 +31,7 @@ public class JobController {
         return jobService.addJob(job);
     }
 
-    @DeleteMapping("/api/job/{id}/delete")
+    @DeleteMapping("/api/job/delete/{id}")
     public void deleteJob(@PathVariable Long id){
         jobService.deleteJob(id);
     }
