@@ -42,11 +42,9 @@ export class ApiService {
   public getAllJobs(): Observable<Job[]>{
     const headers = this.generateAuthorizedHeader();
     // return this.http.get<Job[]>('http://localhost:8080/api/job/all', { headers });
-    console.log('XD');
     this.http.get<Job[]>('http://localhost:8080/api/job/all', {headers}).subscribe(j => {
       this.jobs = j;
       this.jobSubject.next(j);
-      console.log(j);
     }, error => {
       console.log(error);
     });

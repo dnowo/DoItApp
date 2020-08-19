@@ -1,12 +1,25 @@
 import {Component} from '@angular/core';
 import {ApiService, Job} from './api.service';
-import {HttpErrorResponse} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {animate, style, transition, trigger} from '@angular/animations';
+
+
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  animations: [
+    trigger('slideInOut', [
+      transition(':enter', [
+        style({transform: 'translateY(-100%)'}),
+        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+      ]),
+      transition(':leave', [
+        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+      ])
+    ])
+  ]
 })
 export class AppComponent{
   title = 'DoItApp';
@@ -14,6 +27,17 @@ export class AppComponent{
   job: Array<Job>;
   selectedJob: Job;
   allJobs$: Observable<Job[]>;
+
+  notificationEdit: any = false;
+  editedJob: Job = new class implements Job {
+    deadline: Date;
+    description: string;
+    ended: boolean;
+    id: number;
+    notification: boolean;
+    priority: number;
+    title: string;
+  };
 
   constructor(private service: ApiService) {
     this.delay(100);
@@ -26,11 +50,6 @@ export class AppComponent{
   }
 
   getJobs(): void {
-    // this.service.getAllJobs().subscribe(j => this.job = j, (error: HttpErrorResponse) => {
-    //   console.log(error.status, error.headers);
-    // });
-    // this.allJobs$ = this.service.getAllJobs();
-    // console.log(this.job.filter(job => job.id === 2));
     this.allJobs$ = this.service.getAllJobs();
   }
 
@@ -56,16 +75,18 @@ export class AppComponent{
   }
 
   editJob(): void {
-    const job: Job = ({
-      id: 3,
-      title: 'Edytowana praca Angular!',
-      description: 'Lorem ipsum...[..]',
-      priority: 1,
-      notification: false,
-      deadline: new Date('2020-08-18T09:46:00'),
-      ended: false,
-    });
-    this.service.editJob(job).subscribe(edited => console.log(edited));
+    // const j: Job = ({
+    //   id: 3,
+    //   title: 'Edytowana praca Angular!',
+    //   description: 'Lorem ipsum...[..]',
+    //   priority: 1,
+    //   notification: false,
+    //   deadline: new Date('2020-08-18T09:46:00'),
+    //   ended: false,
+    // });
+    this.service.editJob(this.editedJob).subscribe(edited => console.log(edited));
+    this.editedJob = null;
+    this.selectedJob = null;
   }
 
   deleteJob(job: Job): void {
@@ -75,5 +96,16 @@ export class AppComponent{
   onSelect(j: Job): void {
     this.selectedJob = j;
   }
+
+  readForm(id: number, title: string, deadline: Date, description: string, priority: string): void{
+    console.log(this.notificationEdit, title, deadline, description, priority);
+    this.editedJob.id = id;
+    this.editedJob.title = title;
+    this.editedJob.priority = parseInt(priority);
+    this.editedJob.deadline = new Date(deadline);
+    this.editedJob.description = description;
+    this.editedJob.notification = this.notificationEdit;
+  }
+
 }
 

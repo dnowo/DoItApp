@@ -7,11 +7,34 @@ button {
 .font-gothic {
   font-family: Century Gothic,CenturyGothic,AppleGothic, sans-serif;
 }
-table, caption, main, input {
+table, caption, main, small {
   color: gainsboro;
 }
+input {
+  color: black;
+}
+table{
+  background: linear-gradient(-15deg, rgba(88, 86, 86, 0.8), rgba(148, 131, 131, 0.8), rgb(167, 121, 76), rgb(121, 105, 92));
+  background-size: 400% 400%;
+  animation: gradient 5s ease infinite;
+  border-radius: 1rem;
+  -webkit-box-shadow: 0px -1px 51px 26px rgba(0, 0, 0, 0.75);
+  -moz-box-shadow: 0px -1px 51px 26px rgba(0,0,0,0.75);
+  box-shadow: 0px -1px 51px 26px rgba(0,0,0,0.75);
+}
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
 thead{
-  border: 1px solid #fff!important;
+  /*border: 1px solid #fff!important;*/
 }
 .open ul.dropdown-menu {
   display: block;
@@ -22,4 +45,22 @@ thead{
   padding-left: 1px;
   padding-right: 1px;
 }
+.color-form {color: black;}
 
+::ng-deep .mat-checkbox .mat-checkbox-frame {
+  border-color: white;
+}
+::ng-deep .mat-focused .mat-form-field-label {
+  /*change color of label*/
+  color: green !important;
+}
+
+::ng-deep.mat-form-field-underline {
+  /*change color of underline*/
+  background-color: green !important;
+}
+
+::ng-deep.mat-form-field-ripple {
+  /*change color of underline when focused*/
+  background-color: green !important;;
+}
