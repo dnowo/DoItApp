@@ -39,9 +39,9 @@
         </td>
         <td>{{ j.title }}</td>
         <td>{{ j.description }}</td>
-        <td>{{ j.deadline }}</td>
-        <td>{{ j.priority }}</td>
-        <td>{{ j.notification }}</td>
+        <td>{{ j.deadline | slice:0:10 }}</td>
+        <td>{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
+        <td>{{ j.notification ? 'Yes' : 'No'}}</td>
 
       </tr>
       </tbody>
@@ -51,57 +51,61 @@
 
   <section id="editPanel">
     <div *ngIf="selectedJob" [@slideInOut] class="container">
-      <h3>Edit your job</h3>
-      <form class="font-gothic">
+      <h3 class="font-gothic">Edit your job</h3>
+      <form autocomplete="on" [formGroup]="editForm" (ngSubmit)="readEditForm(selectedJob.id)">
         <div class="form-row">
           <div class="form-group">
             <div class="col-md-5 mb-5">
-              <label for="inputTitle">Title</label>
-              <input #title
-                     type="text" class="form-control color-form" id="inputTitle"
-                     placeholder="' {{selectedJob.title}} '">
+              <mat-form-field  style="width:100%" appearance="fill" >
+                <mat-label>{{selectedJob.title}}</mat-label>
+                <input matInput type="text"
+                       formControlName="title"
+                       name="given-title"
+                       autocomplete="given-title">
+              </mat-form-field>
             </div>
 
             <div class="col-md-4 mb-5">
-              <label for="inputDeadline">Deadline</label>
-              <input  #deadline
-                      type="date" min="2019-01-01" max="2200-12-31" class="form-control " id="inputDeadline"
-                      placeholder="{{selectedJob.deadline}}">
+              <mat-form-field style="width:100%" appearance="fill" class="full-width">
+                <mat-label>{{ selectedJob.deadline | slice:0:10}}</mat-label>
+                <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" autocomplete="dline">
+                <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
+                <mat-datepicker startView="multi-year"  #deadlinePicker></mat-datepicker>
+              </mat-form-field>
             </div>
 
             <div class="col-md-3 mb-5">
-              <label for="selectPriority">Priority</label>
-              <select
-                #priority
-                class="form-control" id="selectPriority">
-                <option selected>{{selectedJob.priority}}</option>
-                <option value="1">High</option>
-                <option value="2">Medium</option>
-                <option value="3">Low</option>
-              </select>
+              <mat-form-field style="width:100%" appearance="fill">
+                <mat-label>{{ selectedJob.priority === 1 ? 'High' : (selectedJob.priority === 2 ? 'Medium' : (selectedJob.priority === 3 ? 'Low' : 'None'))}}</mat-label>
+                <mat-select formControlName="priority">
+                  <mat-option value="1">High</mat-option>
+                  <mat-option value="2">Medium</mat-option>
+                  <mat-option value="3">Low</mat-option>
+                </mat-select>
+              </mat-form-field>
             </div>
+
           </div>
+
           <div class="form-row">
             <div class="col-md-12 mb-10">
-              <label for="inputDescription">Description</label>
-              <textarea
-                #description
-                rows="3" type="text" class="form-control" id="inputDescription"
-                        placeholder="' {{selectedJob.description}} '"></textarea>
+              <mat-form-field style="width:100%" appearance="fill">
+                <mat-label>{{selectedJob.description}}</mat-label>
+                <textarea formControlName="description" matInput></textarea>
+              </mat-form-field>
             </div>
           </div>
 
           <div class="form-row">
-
             <div class="col-md-12 mb-5">
               <mat-checkbox
-                [(ngModel)]="notificationEdit"
-                [ngModelOptions]="{standalone: true}"
-                class="form-check-input" type="checkbox" value="" id="notificationCheck">Notification</mat-checkbox>
-<!--              <label class="form-check-label" for="invalidCheck3">&nbsp;  </label>-->
+                formControlName="notification"
+                class="form-check-input" type="checkbox" value="" id="notificationCheck">Notification
+              </mat-checkbox>
             </div>
-            <div class="col-md-12 mb-5">
-              <button class="btn btn-secondary" (click)="readForm(selectedJob.id, title.value, deadline.valueAsDate, description.value, priority.value); editJob();" type="submit">Save</button>
+            <div class="col-md-5 mb-5">
+              <button mat-raised-button  [disabled]="!editForm.valid" color="accent"  type="submit"  style="width:100%">Save, me!</button>
+
             </div>
           </div>
 
@@ -109,15 +113,9 @@
       </form>
     </div>
   </section>
-  <!--  <button type="button" class="btn btn-dark font-gothic" (click)="getJobs()">Get Jobs</button>-->
-  <!--  <button (click)="getJobById(2)">Get 1st Job</button>-->
-  <!--  <button (click)="addPost()">Add 1 post</button>-->
-  <!--  <button (click)="editPost()">Edit post</button>-->
-  <!--  <button (click)="deletePost()">delete post</button>-->
 </main>
 
 <footer>
-  <div class="container"><h5>author: Daniel Nowosielecki</h5></div>
-
+  <div class="container"><h5>Author: Daniel Nowosielecki</h5></div>
 </footer>
 <router-outlet></router-outlet>

@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {ApiService, Job} from './api.service';
 import {Observable} from 'rxjs';
 import {animate, style, transition, trigger} from '@angular/animations';
+import {FormControl, FormGroupDirective, FormGroup, NgForm, Validators} from '@angular/forms';
 
 
 
@@ -13,31 +14,40 @@ import {animate, style, transition, trigger} from '@angular/animations';
     trigger('slideInOut', [
       transition(':enter', [
         style({transform: 'translateY(-100%)'}),
-        animate('200ms ease-in', style({transform: 'translateY(0%)'}))
+        animate('300ms ease-in', style({transform: 'translateY(0%)'}))
       ]),
       transition(':leave', [
-        animate('200ms ease-in', style({transform: 'translateY(-100%)'}))
+        animate('150ms ease-in', style({transform: 'translateY(-100%)'}))
       ])
     ])
   ]
 })
+
 export class AppComponent{
   title = 'DoItApp';
   jobs: any;
-  job: Array<Job>;
   selectedJob: Job;
   allJobs$: Observable<Job[]>;
 
-  notificationEdit: any = false;
-  editedJob: Job = new class implements Job {
-    deadline: Date;
-    description: string;
-    ended: boolean;
-    id: number;
-    notification: boolean;
-    priority: number;
-    title: string;
-  };
+  editForm = new FormGroup({
+    notification: new FormControl('', [
+      Validators.required
+    ]),
+    title: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2)
+    ]),
+    description: new FormControl('', [
+      Validators.required,
+      Validators.minLength(2)
+    ]),
+    deadline: new FormControl('', [
+      Validators.required,
+    ]),
+    priority: new FormControl('', [
+      Validators.required,
+    ]),
+  });
 
   constructor(private service: ApiService) {
     this.delay(100);
@@ -56,7 +66,6 @@ export class AppComponent{
   getJobById(id: number): void {
     this.service.getJobById(id).subscribe(jobs => {
       this.jobs = jobs;
-      console.log(jobs);
     });
 
   }
@@ -74,18 +83,8 @@ export class AppComponent{
     this.service.addJob(job).subscribe(jobs => console.log(jobs));
   }
 
-  editJob(): void {
-    // const j: Job = ({
-    //   id: 3,
-    //   title: 'Edytowana praca Angular!',
-    //   description: 'Lorem ipsum...[..]',
-    //   priority: 1,
-    //   notification: false,
-    //   deadline: new Date('2020-08-18T09:46:00'),
-    //   ended: false,
-    // });
-    this.service.editJob(this.editedJob).subscribe(edited => console.log(edited));
-    this.editedJob = null;
+  editJob(job: Job): void {
+    this.service.editJob(job).subscribe(edited => console.log(edited));
     this.selectedJob = null;
   }
 
@@ -95,17 +94,30 @@ export class AppComponent{
 
   onSelect(j: Job): void {
     this.selectedJob = j;
+    this.editForm.patchValue({
+      notification: j.notification,
+    });
   }
 
-  readForm(id: number, title: string, deadline: Date, description: string, priority: string): void{
-    console.log(this.notificationEdit, title, deadline, description, priority);
-    this.editedJob.id = id;
-    this.editedJob.title = title;
-    this.editedJob.priority = parseInt(priority);
-    this.editedJob.deadline = new Date(deadline);
-    this.editedJob.description = description;
-    this.editedJob.notification = this.notificationEdit;
-  }
+  readEditForm(id: number): void{
+    const editedJob: Job = new class implements Job {
+      deadline: Date;
+      description: string;
+      ended: boolean;
+      id: number;
+      notification: boolean;
+      priority: number;
+      title: string;
+    };
 
+    editedJob.id = id;
+    editedJob.title = this.editForm.value.title;
+    editedJob.priority = this.editForm.value.priority;
+    editedJob.deadline = this.editForm.value.deadline;
+    editedJob.description = this.editForm.value.description;
+    editedJob.notification = this.editForm.value.notification;
+
+    this.editJob(editedJob);
+  }
 }
 

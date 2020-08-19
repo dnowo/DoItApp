@@ -62,5 +62,8 @@ thead{
 
 ::ng-deep.mat-form-field-ripple {
   /*change color of underline when focused*/
-  background-color: green !important;;
+  background-color: green !important;
+}
+::ng-deep.mat-form-field .mat-form-field-flex{
+    background-color: white !important;
 }

@@ -39,9 +39,8 @@ export class ApiService {
     return generatedHeader;
   }
 
-  public getAllJobs(): Observable<Job[]>{
+  public getAllJobs(): Observable<Job[]> {
     const headers = this.generateAuthorizedHeader();
-    // return this.http.get<Job[]>('http://localhost:8080/api/job/all', { headers });
     this.http.get<Job[]>('http://localhost:8080/api/job/all', {headers}).subscribe(j => {
       this.jobs = j;
       this.jobSubject.next(j);
@@ -62,6 +61,20 @@ export class ApiService {
   }
 
   public editJob(job: Job): Observable<Job> {
+    const find: Job = this.jobs.find(x => x.id === job.id);
+    const index: number = this.jobs.indexOf(find);
+
+    // @ts-ignore
+    job.deadline = this.convert(job.deadline);
+
+    if (index !== -1) {
+      this.jobs[index].title = job.title;
+      this.jobs[index].description = job.description;
+      this.jobs[index].deadline = job.deadline;
+      this.jobs[index].notification = job.notification;
+      this.jobs[index].priority = job.priority;
+      this.jobSubject.next(this.jobs);
+    }
     const headers = this.generateAuthorizedHeader();
     return this.http.put<Job>('http://localhost:8080/api/job/edit', job, {headers});
   }
@@ -76,6 +89,12 @@ export class ApiService {
     return this.http.delete<Job>('http://localhost:8080/api/job/delete/' + job.id, {headers});
   }
 
+  convert(str): string {
+    const date = new Date(str),
+      mnth = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2);
+    return [date.getFullYear(), mnth, day].join('-') + 'T00:00:00';
+  }
 }
 
 export interface Job {
