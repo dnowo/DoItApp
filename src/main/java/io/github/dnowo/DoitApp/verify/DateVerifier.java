@@ -14,15 +14,21 @@ import java.util.List;
 public class DateVerifier {
     private final JobService jobService;
 
-    public void verifyJobTime(List<Job> jobsFromDatabase){
 
+    /**TODO:
+     *
+     * Verify correct datetime in db. (ends before correct time).
+     * Priority : none.
+     * Sorting.
+     * PAgination?
+     */
+    public void verifyJobTime(List<Job> jobsFromDatabase){
         LocalDateTime dateTimeNow = LocalDateTime.now();
         String time = dateTimeNow.format(Constants.DATE_FORMAT);
         LocalDateTime localDateTimeNow = LocalDateTime.parse(time);
 
         for(Job j : jobsFromDatabase){
             LocalDateTime actualJobDateTime = j.getDeadline();
-
             if(localDateTimeNow.isAfter(actualJobDateTime)){
                 jobService.changeEndedState(j);
             }

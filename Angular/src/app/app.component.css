@@ -7,20 +7,25 @@ button {
 .font-gothic {
   font-family: Century Gothic,CenturyGothic,AppleGothic, sans-serif;
 }
+h1 {
+  font-size: xx-large;
+}
 table, caption, main, small {
-  color: gainsboro;
+  color: #ffffff;
 }
 input {
   color: black;
 }
 table{
-  background: linear-gradient(-15deg, rgba(88, 86, 86, 0.8), rgba(148, 131, 131, 0.8), rgb(167, 121, 76), rgb(121, 105, 92));
+  background: linear-gradient(-15deg, rgb(128, 93, 87), rgb(146, 105, 78), rgb(81, 43, 88), rgb(44, 0, 62));
   background-size: 400% 400%;
   animation: gradient 5s ease infinite;
   border-radius: 1rem;
   -webkit-box-shadow: 0px -1px 51px 26px rgba(0, 0, 0, 0.75);
   -moz-box-shadow: 0px -1px 51px 26px rgba(0,0,0,0.75);
   box-shadow: 0px -1px 51px 26px rgba(0,0,0,0.75);
+  padding: 10px;
+  border: 0;
 }
 @keyframes gradient {
   0% {
@@ -46,7 +51,18 @@ thead{
   padding-right: 1px;
 }
 .color-form {color: black;}
-
+.float{
+  position:fixed;
+  width:60px;
+  height:60px;
+  bottom:40px;
+  right:40px;
+  background-color: rgba(88, 86, 86, 0.8);
+  color:#FFF;
+  border-radius:50px;
+  text-align:center;
+  box-shadow: 2px 2px 3px #999;
+}
 ::ng-deep .mat-checkbox .mat-checkbox-frame {
   border-color: white;
 }
@@ -66,4 +82,141 @@ thead{
 }
 ::ng-deep.mat-form-field .mat-form-field-flex{
     background-color: white !important;
+}
+.jello-horizontal {
+  -webkit-animation: jello-horizontal 0.9s both;
+  animation: jello-horizontal 0.9s both;
+}
+@-webkit-keyframes jello-horizontal {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+@keyframes jello-horizontal {
+  0% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+  30% {
+    -webkit-transform: scale3d(1.25, 0.75, 1);
+    transform: scale3d(1.25, 0.75, 1);
+  }
+  40% {
+    -webkit-transform: scale3d(0.75, 1.25, 1);
+    transform: scale3d(0.75, 1.25, 1);
+  }
+  50% {
+    -webkit-transform: scale3d(1.15, 0.85, 1);
+    transform: scale3d(1.15, 0.85, 1);
+  }
+  65% {
+    -webkit-transform: scale3d(0.95, 1.05, 1);
+    transform: scale3d(0.95, 1.05, 1);
+  }
+  75% {
+    -webkit-transform: scale3d(1.05, 0.95, 1);
+    transform: scale3d(1.05, 0.95, 1);
+  }
+  100% {
+    -webkit-transform: scale3d(1, 1, 1);
+    transform: scale3d(1, 1, 1);
+  }
+}
+.borderless td, .borderless th {
+  border: none;
+}
+.isDisabled {
+  color: black;
+  cursor: not-allowed;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.strikethrough {
+  text-decoration: line-through;
+  color: rosybrown;
+}
+.shake-horizontal:hover {
+  -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+  animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
+}
+@-webkit-keyframes shake-horizontal {
+   0%,
+   100% {
+     -webkit-transform: translateX(0);
+     transform: translateX(0);
+   }
+   10%,
+   30%,
+   50%,
+   70% {
+     -webkit-transform: translateX(-10px);
+     transform: translateX(-10px);
+   }
+   20%,
+   40%,
+   60% {
+     -webkit-transform: translateX(10px);
+     transform: translateX(10px);
+   }
+   80% {
+     -webkit-transform: translateX(8px);
+     transform: translateX(8px);
+   }
+   90% {
+     -webkit-transform: translateX(-8px);
+     transform: translateX(-8px);
+   }
+ }
+@keyframes shake-horizontal {
+  0%,
+  100% {
+    -webkit-transform: translateX(0);
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70% {
+    -webkit-transform: translateX(-10px);
+    transform: translateX(-10px);
+  }
+  20%,
+  40%,
+  60% {
+    -webkit-transform: translateX(10px);
+    transform: translateX(10px);
+  }
+  80% {
+    -webkit-transform: translateX(8px);
+    transform: translateX(8px);
+  }
+  90% {
+    -webkit-transform: translateX(-8px);
+    transform: translateX(-8px);
+  }
 }

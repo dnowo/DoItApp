@@ -1,10 +1,9 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ApiService, Job} from './api.service';
 import {Observable} from 'rxjs';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {FormControl, FormGroupDirective, FormGroup, NgForm, Validators} from '@angular/forms';
-
-
+import {MatDialog} from '@angular/material/dialog';
 
 @Component({
   selector: 'app-root',
@@ -13,23 +12,23 @@ import {FormControl, FormGroupDirective, FormGroup, NgForm, Validators} from '@a
   animations: [
     trigger('slideInOut', [
       transition(':enter', [
-        style({transform: 'translateY(-100%)'}),
-        animate('300ms ease-in', style({transform: 'translateY(0%)'}))
+        style({transform: 'translateY(-50%)'}),
+        animate('300ms ease-in', style({transform: 'translateY(30%)'}))
       ]),
       transition(':leave', [
-        animate('150ms ease-in', style({transform: 'translateY(-100%)'}))
+        animate('150ms ease-in', style({transform: 'translateY(-50%)'}))
       ])
     ])
   ]
 })
 
-export class AppComponent{
+export class AppComponent {
   title = 'DoItApp';
-  jobs: any;
   selectedJob: Job;
+  jobToAdd: Job;
   allJobs$: Observable<Job[]>;
 
-  editForm = new FormGroup({
+  form = new FormGroup({
     notification: new FormControl('', [
       Validators.required
     ]),
@@ -49,43 +48,50 @@ export class AppComponent{
     ]),
   });
 
-  constructor(private service: ApiService) {
-    this.delay(100);
+  jobAddEdit: Job = new class implements Job {
+    deadline: Date;
+    description: string;
+    ended: boolean;
+    id: number;
+    notification: boolean;
+    priority: number;
+    title: string;
+  };
+
+  constructor(private service: ApiService, public dialog: MatDialog) {
+    this.delay(150);
   }
 
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => {
       this.getJobs();
     });
+
   }
 
   getJobs(): void {
     this.allJobs$ = this.service.getAllJobs();
   }
 
-  getJobById(id: number): void {
-    this.service.getJobById(id).subscribe(jobs => {
-      this.jobs = jobs;
-    });
-
-  }
+  // getJobById(id: number): void {
+  //   this.service.getJobById(id).subscribe(jobs => {
+  //     this.jobs = jobs;
+  //   });
+  // }
 
   addJob(): void {
-    const job: Job = ({
-      id: null,
-      title: 'Nowa praca Angular!',
-      description: 'Lorem ipsum...[..]',
-      priority: 2,
-      notification: false,
-      deadline: new Date('2020-08-09T22:47:00'),
-      ended: false,
-    });
-    this.service.addJob(job).subscribe(jobs => console.log(jobs));
+    this.jobAddEdit = this.readForm();
+    this.service.addJob(this.jobAddEdit).subscribe(jobs => console.log(jobs));
+    this.jobAddEdit = null;
+    this.jobToAdd = null;
   }
 
-  editJob(job: Job): void {
-    this.service.editJob(job).subscribe(edited => console.log(edited));
+  editJob(id: number): void {
+    this.jobAddEdit = this.readForm();
+    this.jobAddEdit.id = id;
+    this.service.editJob(this.jobAddEdit).subscribe(edited => console.log(edited));
     this.selectedJob = null;
+    this.jobAddEdit = null;
   }
 
   deleteJob(job: Job): void {
@@ -94,13 +100,25 @@ export class AppComponent{
 
   onSelect(j: Job): void {
     this.selectedJob = j;
-    this.editForm.patchValue({
+    this.form.patchValue({
       notification: j.notification,
     });
   }
 
-  readEditForm(id: number): void{
-    const editedJob: Job = new class implements Job {
+  onAdd(): void {
+    this.jobToAdd = ({
+      id: null,
+      title: 'Type in title...',
+      description: 'Description...',
+      priority: 0,
+      notification: false,
+      deadline: null,
+      ended: false,
+    });
+  }
+
+  readForm(): Job {
+    const job: Job = new class implements Job {
       deadline: Date;
       description: string;
       ended: boolean;
@@ -109,15 +127,30 @@ export class AppComponent{
       priority: number;
       title: string;
     };
+    job.title = this.form.value.title;
+    job.priority = this.form.value.priority;
+    job.deadline = this.form.value.deadline;
+    job.description = this.form.value.description;
+    job.notification = this.form.value.notification;
 
-    editedJob.id = id;
-    editedJob.title = this.editForm.value.title;
-    editedJob.priority = this.editForm.value.priority;
-    editedJob.deadline = this.editForm.value.deadline;
-    editedJob.description = this.editForm.value.description;
-    editedJob.notification = this.editForm.value.notification;
+    return job;
+  }
 
-    this.editJob(editedJob);
+  finishJob(j: Job): void {
+    j.ended = true;
+    this.service.editJob(j).subscribe(job => console.log(job));
+    this.selectedJob = null;
+    this.jobAddEdit = null;
+  }
+
+  openErrDialog(): void {
+    this.dialog.open(DialogErrorAction);
   }
 }
+
+@Component({
+  selector: 'dialog-error-action',
+  templateUrl: 'dialog-error-action.html',
+})
+export class DialogErrorAction {}
 

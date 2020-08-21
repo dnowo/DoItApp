@@ -1,47 +1,47 @@
 <header>
   <div class="container">
-    <h1 class="text-center font-gothic">{{title}}</h1>
+    <h1 class="text-center mt-md-5 jello-horizontal font-gothic">{{title}}</h1>
   </div>
 </header>
 <main>
 
   <div class="container" data-ng-app="DoItApp">
-    <table class="table font-gothic">
+    <table class="table borderless font-gothic">
       <caption>
         <h2>List of your jobs</h2>
       </caption>
       <thead class="table-striped">
       <tr>
-        <th>Action</th>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Deadline</th>
-        <th>Priority</th>
-        <th>Notification</th>
+        <th scope="col">Action</th>
+        <th scope="col">Title</th>
+        <th scope="col">Description</th>
+        <th scope="col">Deadline</th>
+        <th scope="col">Priority</th>
+        <th scope="col">Notification</th>
       </tr>
       </thead>
       <tbody>
       <tr class="dropdown" dropdown (load)="getJobs()" *ngFor="let j of allJobs$ | async">
         <td>
-          <div class="btn-group dropdown" dropdown>
+          <div class="btn-group dropdown"  dropdown>
             <button dropdownToggle role="button" type="button" class="btn btn-default dropdown-toggle"
                     data-toggle="dropdown">
               <span class="caret"></span>
               <span class="sr-only">Toggle Dropdown</span>
             </button>
             <ul *dropdownMenu class="dropdown-menu" role="menu">
-              <li><a (click)="onSelect(j)">Edit this job</a></li>
-              <li><a href="#">Finish this job</a></li>
+              <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : onSelect(j)">Edit this job</a></li>
+              <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : finishJob(j)">Finish this job</a></li>
               <li class="divider"></li>
               <li><a (click)="deleteJob(j)">Delete this job</a></li>
             </ul>
           </div>
         </td>
-        <td>{{ j.title }}</td>
-        <td>{{ j.description }}</td>
-        <td>{{ j.deadline | slice:0:10 }}</td>
-        <td>{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
-        <td>{{ j.notification ? 'Yes' : 'No'}}</td>
+        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.title }}</td>
+        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.description }}</td>
+        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.deadline | slice:0:10 }}</td>
+        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
+        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.notification ? 'Yes' : 'No'}}</td>
 
       </tr>
       </tbody>
@@ -52,7 +52,7 @@
   <section id="editPanel">
     <div *ngIf="selectedJob" [@slideInOut] class="container">
       <h3 class="font-gothic">Edit your job</h3>
-      <form autocomplete="on" [formGroup]="editForm" (ngSubmit)="readEditForm(selectedJob.id)">
+      <form autocomplete="on" [formGroup]="form" (ngSubmit)="editJob(selectedJob.id)">
         <div class="form-row">
           <div class="form-group">
             <div class="col-md-5 mb-5">
@@ -91,7 +91,7 @@
             <div class="col-md-12 mb-10">
               <mat-form-field style="width:100%" appearance="fill">
                 <mat-label>{{selectedJob.description}}</mat-label>
-                <textarea formControlName="description" matInput></textarea>
+                <textarea style="color: black;" formControlName="description" matInput></textarea>
               </mat-form-field>
             </div>
           </div>
@@ -104,7 +104,7 @@
               </mat-checkbox>
             </div>
             <div class="col-md-5 mb-5">
-              <button mat-raised-button  [disabled]="!editForm.valid" color="accent"  type="submit"  style="width:100%">Save, me!</button>
+              <button mat-raised-button  [disabled]="!form.valid" color="accent"  type="submit"  style="width:100%">Save, me!</button>
 
             </div>
           </div>
@@ -113,9 +113,77 @@
       </form>
     </div>
   </section>
+
+  <section id="addPanel">
+    <button (click)="onAdd()" class="float" mat-fab color="warn" aria-label="Add a new job">
+      <mat-icon>add</mat-icon>
+    </button>
+
+    <div *ngIf="jobToAdd" [@slideInOut] class="container">
+      <h3 class="font-gothic">Add a new job</h3>
+      <form autocomplete="on" [formGroup]="form" (ngSubmit)="addJob()">
+        <div class="form-row">
+          <div class="form-group">
+            <div class="col-md-5 mb-5">
+              <mat-form-field  style="width:100%" appearance="fill" >
+                <mat-label>Title</mat-label>
+                <input matInput type="text"
+                       formControlName="title"
+                       name="given-title"
+                       autocomplete="given-title">
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-4 mb-5">
+              <mat-form-field style="width:100%" appearance="fill" class="full-width">
+                <mat-label>Date</mat-label>
+                <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" autocomplete="dline">
+                <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
+                <mat-datepicker startView="multi-year"  #deadlinePicker></mat-datepicker>
+              </mat-form-field>
+            </div>
+
+            <div class="col-md-3 mb-5">
+              <mat-form-field style="width:100%" appearance="fill">
+                <mat-label>Priority</mat-label>
+                <mat-select formControlName="priority">
+                  <mat-option value="1">High</mat-option>
+                  <mat-option value="2">Medium</mat-option>
+                  <mat-option value="3">Low</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 mb-10">
+              <mat-form-field style="width:100%" appearance="fill">
+                <mat-label>Description</mat-label>
+                <textarea style="color: black;" formControlName="description" matInput></textarea>
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-md-12 mb-5">
+              <mat-checkbox
+                formControlName="notification"
+                class="form-check-input" type="checkbox" value="" id="notificationCheckAdd">Notification
+              </mat-checkbox>
+            </div>
+            <div class="col-md-5 mb-5">
+              <button mat-raised-button  [disabled]="!form.valid" color="accent"  type="submit"  style="width:100%">Submit me!</button>
+
+            </div>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </section>
+
 </main>
 
-<footer>
-  <div class="container"><h5>Author: Daniel Nowosielecki</h5></div>
-</footer>
+
 <router-outlet></router-outlet>

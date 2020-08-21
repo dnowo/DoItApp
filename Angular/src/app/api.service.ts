@@ -13,6 +13,7 @@ export class ApiService {
   };
 
   token: any;
+  private url = 'http://localhost:8080/';
 
   private jobSubject = new BehaviorSubject<Job[]>([]);
   jobObservable$ = this.jobSubject.asObservable();
@@ -23,7 +24,7 @@ export class ApiService {
   }
 
   private generateToken(request): Observable<any> {
-    return this.http.post('http://localhost:8080/login', request, {responseType: 'text' as 'json'});
+    return this.http.post(this.url + 'login', request, {responseType: 'text' as 'json'});
   }
 
   public getAccessToken(authRequest): void {
@@ -41,7 +42,7 @@ export class ApiService {
 
   public getAllJobs(): Observable<Job[]> {
     const headers = this.generateAuthorizedHeader();
-    this.http.get<Job[]>('http://localhost:8080/api/job/all', {headers}).subscribe(j => {
+    this.http.get<Job[]>(this.url + 'api/job/all', {headers}).subscribe(j => {
       this.jobs = j;
       this.jobSubject.next(j);
     }, error => {
@@ -52,12 +53,16 @@ export class ApiService {
 
   public getJobById(id: number): Observable<Job> {
     const headers = this.generateAuthorizedHeader();
-    return this.http.get<Job>('http://localhost:8080/api/job/' + id, {headers});
+    return this.http.get<Job>(this.url + 'api/job/' + id, {headers});
   }
 
   public addJob(job: Job): Observable<Job> {
+    // @ts-ignore
+    job.deadline = this.convert(job.deadline);
+    this.jobs.push(job);
+    this.jobSubject.next(this.jobs);
     const headers = this.generateAuthorizedHeader();
-    return this.http.post<Job>('http://localhost:8080/api/job/add', job, {headers});
+    return this.http.post<Job>(this.url + 'api/job/add', job, {headers});
   }
 
   public editJob(job: Job): Observable<Job> {
@@ -73,10 +78,11 @@ export class ApiService {
       this.jobs[index].deadline = job.deadline;
       this.jobs[index].notification = job.notification;
       this.jobs[index].priority = job.priority;
+      this.jobs[index].ended = job.ended;
       this.jobSubject.next(this.jobs);
     }
     const headers = this.generateAuthorizedHeader();
-    return this.http.put<Job>('http://localhost:8080/api/job/edit', job, {headers});
+    return this.http.put<Job>(this.url + 'api/job/edit', job, {headers});
   }
 
   public deleteJob(job: Job): Observable<Job> {
@@ -86,7 +92,7 @@ export class ApiService {
       this.jobs.splice(index, 1);
     }
     this.jobSubject.next(this.jobs);
-    return this.http.delete<Job>('http://localhost:8080/api/job/delete/' + job.id, {headers});
+    return this.http.delete<Job>(this.url + 'api/job/delete/' + job.id, {headers});
   }
 
   convert(str): string {
