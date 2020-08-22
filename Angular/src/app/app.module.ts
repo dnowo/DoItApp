@@ -23,9 +23,12 @@ import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 
+import {SplitPipe} from './app.component';
+
 @NgModule({
   declarations: [
     AppComponent,
+    SplitPipe
   ],
 
   imports: [
@@ -54,6 +57,9 @@ import {MatPaginatorModule} from '@angular/material/paginator';
     MatPaginatorModule,
   ],
   providers: [],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+  exports: [
+    SplitPipe
+  ]
 })
 export class AppModule { }

@@ -49,3 +49,47 @@ INSERT INTO jobs(
     '2020-08-09 23:42',
     1
 );
+INSERT INTO jobs(
+    priority, title, description, deadline, notification
+) VALUES (
+    1,
+    'Learn Java1!',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    '2020-11-03 12:19',
+    1
+);
+
+INSERT INTO jobs(
+    priority, title, description, deadline, notification
+) VALUES (
+    1,
+    'Learn Java2!',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    '2020-10-03 12:19',
+    1
+);
+
+INSERT INTO jobs(
+    priority, title, description, deadline, notification
+) VALUES (
+    1,
+    'Learn Java3!',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    '2020-09-03 12:19',
+    1
+);
+
+INSERT INTO jobs(
+    priority, title, description, deadline, notification, ended
+) VALUES (
+    1,
+    'Learn Java4!',
+    'Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
+    '2020-08-20 12:19',
+    1,
+    1
+);

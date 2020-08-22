@@ -40,11 +40,13 @@ export class ApiService {
     return generatedHeader;
   }
 
-  public getAllJobs(): Observable<Job[]> {
+  public getAllJobs(page: number): Observable<Job[]> {
     const headers = this.generateAuthorizedHeader();
-    this.http.get<Job[]>(this.url + 'api/job/all', {headers}).subscribe(j => {
-      this.jobs = j;
-      this.jobSubject.next(j);
+    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page, {headers}).subscribe(j => {
+      if (j.length > 0){
+        this.jobs = j;
+        this.jobSubject.next(j);
+      }
     }, error => {
       console.log(error);
     });
@@ -101,6 +103,7 @@ export class ApiService {
       day = ('0' + date.getDate()).slice(-2);
     return [date.getFullYear(), mnth, day].join('-') + 'T00:00:00';
   }
+
 }
 
 export interface Job {

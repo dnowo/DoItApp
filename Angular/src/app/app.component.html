@@ -21,7 +21,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr class="dropdown" dropdown (load)="getJobs()" *ngFor="let j of allJobs$ | async">
+      <tr [ngClass]="j.ended ? 'shake-horizontal' : 'null'" class="dropdown" dropdown (load)="getJobs(numberOfJobs)" *ngFor="let j of allJobs$ | async">
         <td>
           <div class="btn-group dropdown"  dropdown>
             <button dropdownToggle role="button" type="button" class="btn btn-default dropdown-toggle"
@@ -37,11 +37,11 @@
             </ul>
           </div>
         </td>
-        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.title }}</td>
-        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.description }}</td>
-        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.deadline | slice:0:10 }}</td>
-        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
-        <td [ngClass]="j.ended ? 'strikethrough shake-horizontal' : 'null'">{{ j.notification ? 'Yes' : 'No'}}</td>
+        <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.title }}</td>
+        <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.description }}</td>
+        <td style="width:10%" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | slice:0:10 }}</td>
+        <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
+        <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.notification ? 'Yes' : 'No'}}</td>
 
       </tr>
       </tbody>
@@ -182,7 +182,16 @@
       </form>
     </div>
   </section>
-
+<section id="page">
+  <div class="container">
+    <button (click)="numberOfJobs = numberOfJobs - 1; getJobs(numberOfJobs)" mat-mini-fab color="">
+      <mat-icon>chevron_left</mat-icon>
+    </button>
+    <button (click)="numberOfJobs = numberOfJobs + 1; getJobs(numberOfJobs)" style="margin-left: 1%;" mat-mini-fab color="">
+      <mat-icon>chevron_right</mat-icon>
+    </button>
+  </div>
+</section>
 </main>
 
 

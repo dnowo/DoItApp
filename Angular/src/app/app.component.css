@@ -157,7 +157,7 @@ thead{
   text-decoration: none;
 }
 .strikethrough {
-  text-decoration: line-through;
+  /*text-decoration: line-through;*/
   color: rosybrown;
 }
 .shake-horizontal:hover {

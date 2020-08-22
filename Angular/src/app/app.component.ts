@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, Pipe, PipeTransform, ViewChild} from '@angular/core';
 import {ApiService, Job} from './api.service';
 import {Observable} from 'rxjs';
 import {animate, style, transition, trigger} from '@angular/animations';
@@ -23,6 +23,10 @@ import {MatDialog} from '@angular/material/dialog';
 })
 
 export class AppComponent {
+
+  constructor(private service: ApiService, public dialog: MatDialog) {
+    this.delay(150);
+  }
   title = 'DoItApp';
   selectedJob: Job;
   jobToAdd: Job;
@@ -58,26 +62,23 @@ export class AppComponent {
     title: string;
   };
 
-  constructor(private service: ApiService, public dialog: MatDialog) {
-    this.delay(150);
-  }
-
-  async delay(ms: number) {
-    await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => {
-      this.getJobs();
-    });
-
-  }
-
-  getJobs(): void {
-    this.allJobs$ = this.service.getAllJobs();
-  }
-
   // getJobById(id: number): void {
   //   this.service.getJobById(id).subscribe(jobs => {
   //     this.jobs = jobs;
   //   });
   // }
+  numberOfJobs = 0;
+
+  async delay(ms: number) {
+    await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => {
+      this.getJobs(this.numberOfJobs);
+    });
+
+  }
+
+  getJobs(page: number): void {
+    this.allJobs$ = this.service.getAllJobs(page);
+  }
 
   addJob(): void {
     this.jobAddEdit = this.readForm();
@@ -146,6 +147,7 @@ export class AppComponent {
   openErrDialog(): void {
     this.dialog.open(DialogErrorAction);
   }
+
 }
 
 @Component({
@@ -154,3 +156,11 @@ export class AppComponent {
 })
 export class DialogErrorAction {}
 
+@Pipe({
+  name: 'split'
+})
+export class SplitPipe implements PipeTransform {
+  transform(val: string, params: string[]): string[] {
+    return val.split(params[0]);
+  }
+}
