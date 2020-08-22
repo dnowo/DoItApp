@@ -39,16 +39,24 @@
         </td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.title }}</td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.description }}</td>
-        <td style="width:10%" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | slice:0:10 }}</td>
+        <td style="width:15%" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | split:"T"}}</td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.notification ? 'Yes' : 'No'}}</td>
 
       </tr>
       </tbody>
     </table>
-
   </div>
-
+  <section id="page">
+    <div class="container">
+      <button (click)="numberOfJobs = numberOfJobs - 1; getJobs(numberOfJobs)" style="margin-bottom: 1%" mat-mini-fab color="">
+        <mat-icon>chevron_left</mat-icon>
+      </button>
+      <button (click)="numberOfJobs = numberOfJobs + 1; getJobs(numberOfJobs)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab color="">
+        <mat-icon>chevron_right</mat-icon>
+      </button>
+    </div>
+  </section>
   <section id="editPanel">
     <div *ngIf="selectedJob" [@slideInOut] class="container">
       <h3 class="font-gothic">Edit your job</h3>
@@ -67,12 +75,15 @@
 
             <div class="col-md-4 mb-5">
               <mat-form-field style="width:100%" appearance="fill" class="full-width">
-                <mat-label>{{ selectedJob.deadline | slice:0:10}}</mat-label>
-                <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" autocomplete="dline">
-                <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
-                <mat-datepicker startView="multi-year"  #deadlinePicker></mat-datepicker>
+              <mat-label>{{ selectedJob.deadline | split:"T"}}</mat-label>
+              <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <ngx-mat-datetime-picker #picker>
+              </ngx-mat-datetime-picker>
               </mat-form-field>
             </div>
+
+
 
             <div class="col-md-3 mb-5">
               <mat-form-field style="width:100%" appearance="fill">
@@ -103,9 +114,13 @@
                 class="form-check-input" type="checkbox" value="" id="notificationCheck">Notification
               </mat-checkbox>
             </div>
-            <div class="col-md-5 mb-5">
-              <button mat-raised-button  [disabled]="!form.valid" color="accent"  type="submit"  style="width:100%">Save, me!</button>
-
+            <div class="form-row">
+              <div class="col-md-5 mb-5">
+                <button mat-raised-button  [disabled]="!form.valid" color="accent"  type="submit"  style="width:100%">Submit me!</button>
+              </div>
+              <div class="col-md-5 mb-5">
+                <button mat-raised-button color="accent"  (click)="jobToAdd=null;" style="width:100%">Hide</button>
+              </div>
             </div>
           </div>
 
@@ -115,7 +130,7 @@
   </section>
 
   <section id="addPanel">
-    <button (click)="onAdd()" class="float" mat-fab color="warn" aria-label="Add a new job">
+    <button (click)="onAdd()" class="float" mat-fab aria-label="Add a new job">
       <mat-icon>add</mat-icon>
     </button>
 
@@ -137,9 +152,13 @@
             <div class="col-md-4 mb-5">
               <mat-form-field style="width:100%" appearance="fill" class="full-width">
                 <mat-label>Date</mat-label>
-                <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" autocomplete="dline">
-                <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>
-                <mat-datepicker startView="multi-year"  #deadlinePicker></mat-datepicker>
+<!--                <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" autocomplete="dline">-->
+<!--                <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>-->
+<!--                <mat-datepicker startView="multi-year"  #deadlinePicker></mat-datepicker>-->
+                <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <ngx-mat-datetime-picker #picker>
+                </ngx-mat-datetime-picker>
               </mat-form-field>
             </div>
 
@@ -172,9 +191,15 @@
                 class="form-check-input" type="checkbox" value="" id="notificationCheckAdd">Notification
               </mat-checkbox>
             </div>
+
+          </div>
+
+          <div class="form-row">
             <div class="col-md-5 mb-5">
               <button mat-raised-button  [disabled]="!form.valid" color="accent"  type="submit"  style="width:100%">Submit me!</button>
-
+            </div>
+            <div class="col-md-5 mb-5">
+              <button mat-raised-button color="accent"  (click)="jobToAdd=null;" style="width:100%">Hide</button>
             </div>
           </div>
 
@@ -182,16 +207,6 @@
       </form>
     </div>
   </section>
-<section id="page">
-  <div class="container">
-    <button (click)="numberOfJobs = numberOfJobs - 1; getJobs(numberOfJobs)" mat-mini-fab color="">
-      <mat-icon>chevron_left</mat-icon>
-    </button>
-    <button (click)="numberOfJobs = numberOfJobs + 1; getJobs(numberOfJobs)" style="margin-left: 1%;" mat-mini-fab color="">
-      <mat-icon>chevron_right</mat-icon>
-    </button>
-  </div>
-</section>
 </main>
 
 

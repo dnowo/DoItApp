@@ -22,6 +22,7 @@ import {MatNativeDateModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
 import {MatTableModule} from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 
 import {SplitPipe} from './app.component';
 
@@ -55,6 +56,10 @@ import {SplitPipe} from './app.component';
     MatSelectModule,
     MatTableModule,
     MatPaginatorModule,
+    NgxMatDatetimePickerModule,
+    NgxMatTimepickerModule,
+    NgxMatNativeDateModule,
+
   ],
   providers: [],
   bootstrap: [AppComponent],

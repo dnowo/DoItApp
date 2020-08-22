@@ -73,7 +73,7 @@ export class ApiService {
 
     // @ts-ignore
     job.deadline = this.convert(job.deadline);
-
+    console.log(job.deadline);
     if (index !== -1) {
       this.jobs[index].title = job.title;
       this.jobs[index].description = job.description;
@@ -100,8 +100,11 @@ export class ApiService {
   convert(str): string {
     const date = new Date(str),
       mnth = ('0' + (date.getMonth() + 1)).slice(-2),
-      day = ('0' + date.getDate()).slice(-2);
-    return [date.getFullYear(), mnth, day].join('-') + 'T00:00:00';
+      day = ('0' + date.getDate()).slice(-2),
+      hour = date.getHours(),
+      secs = date.getSeconds();
+    const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    return [date.getFullYear(), mnth, day].join('-') + 'T' + [hour, mins, secs].join(':');
   }
 
 }

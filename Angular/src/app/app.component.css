@@ -53,15 +53,14 @@ thead{
 .color-form {color: black;}
 .float{
   position:fixed;
-  width:60px;
-  height:60px;
-  bottom:40px;
-  right:40px;
-  background-color: rgba(88, 86, 86, 0.8);
+  /*width:10%;*/
+  /*height:10%;*/
+  bottom:3%;
+  right:3%;
+  background-color: rgb(164, 131, 52);
   color:#FFF;
-  border-radius:50px;
   text-align:center;
-  box-shadow: 2px 2px 3px #999;
+  /*border-radius: 50%;*/
 }
 ::ng-deep .mat-checkbox .mat-checkbox-frame {
   border-color: white;
