@@ -16,11 +16,7 @@ public class DateVerifier {
 
 
     /**TODO:
-     *
-     * Verify correct datetime in db. (ends before correct time).
      * Priority : none.
-     * Sorting.
-     * PAgination?
      */
     public void verifyJobTime(List<Job> jobsFromDatabase){
         LocalDateTime dateTimeNow = LocalDateTime.now();

@@ -18,6 +18,7 @@ export class ApiService {
   private jobSubject = new BehaviorSubject<Job[]>([]);
   jobObservable$ = this.jobSubject.asObservable();
   jobs = [];
+  jobsUnsorted = [];
 
   constructor(private http: HttpClient) {
     this.getAccessToken(this.authRequest);
@@ -51,6 +52,13 @@ export class ApiService {
       console.log(error);
     });
     return this.jobObservable$;
+  }
+
+  public getAllJobsUnsorted() {
+    const headers = this.generateAuthorizedHeader();
+    this.http.get<Job[]>(this.url + 'api/job/unsorted', {headers}).subscribe(j => {
+      this.jobsUnsorted = j;
+    });
   }
 
   public getJobById(id: number): Observable<Job> {
@@ -97,13 +105,13 @@ export class ApiService {
     return this.http.delete<Job>(this.url + 'api/job/delete/' + job.id, {headers});
   }
 
-  convert(str): string {
+  public convert(str): string {
     const date = new Date(str),
       mnth = ('0' + (date.getMonth() + 1)).slice(-2),
       day = ('0' + date.getDate()).slice(-2),
-      hour = date.getHours(),
-      secs = date.getSeconds();
+      hour = date.getHours();
     const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const secs = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
     return [date.getFullYear(), mnth, day].join('-') + 'T' + [hour, mins, secs].join(':');
   }
 

@@ -1,9 +1,11 @@
 import {Component, Pipe, PipeTransform, ViewChild} from '@angular/core';
 import {ApiService, Job} from './api.service';
-import {Observable} from 'rxjs';
+import {Observable, interval} from 'rxjs';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {FormControl, FormGroupDirective, FormGroup, NgForm, Validators} from '@angular/forms';
 import {MatDialog} from '@angular/material/dialog';
+import {Howl, Howler} from 'howler';
+import {filter} from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -26,11 +28,18 @@ export class AppComponent {
 
   constructor(private service: ApiService, public dialog: MatDialog) {
     this.delay(150);
+    this.notify();
+
   }
   title = 'DoItApp';
   selectedJob: Job;
   jobToAdd: Job;
   allJobs$: Observable<Job[]>;
+  numberOfJobs = 0;
+  oneJob: any;
+
+  notifyCheck: any;
+  notifyOnOff: any;
 
   form = new FormGroup({
     notification: new FormControl('', [
@@ -62,12 +71,11 @@ export class AppComponent {
     title: string;
   };
 
-  // getJobById(id: number): void {
-  //   this.service.getJobById(id).subscribe(jobs => {
-  //     this.jobs = jobs;
-  //   });
-  // }
-  numberOfJobs = 0;
+  getJobById(id: number): void{
+    this.service.getJobById(id).subscribe(job => {
+      this.oneJob = job;
+    });
+  }
 
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => {
@@ -90,6 +98,7 @@ export class AppComponent {
   editJob(id: number): void {
     this.jobAddEdit = this.readForm();
     this.jobAddEdit.id = id;
+    this.jobAddEdit.ended = false;
     this.service.editJob(this.jobAddEdit).subscribe(edited => console.log(edited));
     this.selectedJob = null;
     this.jobAddEdit = null;
@@ -133,7 +142,6 @@ export class AppComponent {
     job.deadline = this.form.value.deadline;
     job.description = this.form.value.description;
     job.notification = this.form.value.notification;
-
     return job;
   }
 
@@ -144,10 +152,32 @@ export class AppComponent {
     this.jobAddEdit = null;
   }
 
+  offNotification(j: Job): void {
+    this.notifyOnOff = !this.notifyOnOff;
+    j.notification = !j.notification;
+    this.service.editJob(j).subscribe(job => console.log(job));
+    this.selectedJob = null;
+    this.jobAddEdit = null;
+  }
+
   openErrDialog(): void {
     this.dialog.open(DialogErrorAction);
   }
 
+  notify(): void {
+    this.notifyCheck = interval(5000)
+      .subscribe((val) => {
+        this.service.getAllJobsUnsorted();
+        this.service.jobsUnsorted.filter(vale => {
+          if (vale.ended === true && vale.notification === true){
+            const sound = new Howl({
+              src: ['/assets/notify.mp3']
+            });
+            sound.play();
+          }
+        });
+      });
+  }
 }
 
 @Component({

@@ -50,7 +50,7 @@ public class JobService {
         return jobRepository.getJobById(id);
     }
 
-    public List<Job> findAllNotEndedNearest() {
-        return jobRepository.findAllNotEndedNearest();
+    public List<Job> findAllUnsorted() {
+        return jobRepository.findAll();
     }
 }

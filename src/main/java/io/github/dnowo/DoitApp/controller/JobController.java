@@ -23,10 +23,13 @@ public class JobController {
         return jobList;
     }
 
-    @GetMapping("api/job/actual")
-    public List<Job> findAllNotEndedNearest(){
-        return jobService.findAllNotEndedNearest();
+    @GetMapping("/api/job/unsorted")
+    public List<Job> finAllUnsorted(){
+        List<Job> jobList = jobService.findAllUnsorted();
+        dateVerifier.verifyJobTime(jobList);
+        return jobList;
     }
+
     @GetMapping("api/job/{id}")
     public Job getJobById(@PathVariable Long id){
         return jobService.getJobById(id);

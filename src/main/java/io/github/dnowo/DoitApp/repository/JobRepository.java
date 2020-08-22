@@ -16,6 +16,9 @@ public interface JobRepository extends JpaRepository<Job, Long> {
 
     Job getJobById(Long id);
 
+    @Query("SELECT j FROM Job j")
+    List<Job> findAll();
+
     @Query("SELECT j FROM Job j WHERE j.ended=0 GROUP BY j.ended, j.id ORDER BY j.deadline asc")
     List<Job> findAllNotEndedNearest();
 }

@@ -33,13 +33,14 @@
               <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : onSelect(j)">Edit this job</a></li>
               <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : finishJob(j)">Finish this job</a></li>
               <li class="divider"></li>
+              <li><a (click)="offNotification(j)">Turn {{ j.notification ? 'Off' : 'On' }} notification</a></li>
               <li><a (click)="deleteJob(j)">Delete this job</a></li>
             </ul>
           </div>
         </td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.title }}</td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.description }}</td>
-        <td style="width:15%" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | split:"T"}}</td>
+        <td style="width:15%" [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | slice: 0 : 16 | split:"T"}}</td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
         <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.notification ? 'Yes' : 'No'}}</td>
 
@@ -57,6 +58,7 @@
       </button>
     </div>
   </section>
+
   <section id="editPanel">
     <div *ngIf="selectedJob" [@slideInOut] class="container">
       <h3 class="font-gothic">Edit your job</h3>
@@ -152,9 +154,6 @@
             <div class="col-md-4 mb-5">
               <mat-form-field style="width:100%" appearance="fill" class="full-width">
                 <mat-label>Date</mat-label>
-<!--                <input matInput [matDatepicker]="deadlinePicker" formControlName="deadline" autocomplete="dline">-->
-<!--                <mat-datepicker-toggle matSuffix [for]="deadlinePicker"></mat-datepicker-toggle>-->
-<!--                <mat-datepicker startView="multi-year"  #deadlinePicker></mat-datepicker>-->
                 <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <ngx-mat-datetime-picker #picker>
