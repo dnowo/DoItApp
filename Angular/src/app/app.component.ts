@@ -117,6 +117,10 @@ export class AppComponent {
       });
     } else {
       this.jobToAdd = null;
+      this.selectedJob = j;
+      this.form.patchValue({
+        notification: j.notification,
+      });
     }
   }
 
@@ -140,6 +144,22 @@ export class AppComponent {
       });
     } else {
       this.selectedJob = null;
+      this.form.patchValue({
+        notification: false,
+        priority: 0,
+        deadline: null,
+        description: '',
+        title: ''
+      });
+      this.jobToAdd = ({
+        id: null,
+        title: 'Type in title...',
+        description: 'Description...',
+        priority: 0,
+        notification: false,
+        deadline: null,
+        ended: false,
+      });
     }
   }
 
