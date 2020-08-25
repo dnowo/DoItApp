@@ -9,3 +9,12 @@
 <a href="https://github.com/dnowo/"><img src="https://i.imgur.com/aIPzfgO.png" title="DoItApp" alt="DoItApp"></a>
 <a href="https://github.com/dnowo/"><img src="https://i.imgur.com/3NTmj1X.png" title="DoItApp" alt="DoItApp"></a>
 <br />
+
+# Features
+
+  - REST API provided by Spring server.
+  - JWToken authorization.
+  - Sound notification while job time is done, every 5 secs.
+  - Adding / editing / deleting jobs.
+  - Turning on/off notifications, by clicking job dropdown arrow. While notificate is ON, text changes to 'Turn OFF Notification'.
+  - Angular material design.
