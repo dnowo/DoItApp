@@ -31,9 +31,10 @@ export class AppComponent {
     this.notify();
 
   }
+
   title = 'DoItApp';
-  selectedJob: Job;
-  jobToAdd: Job;
+  selectedJob: Job = null;
+  jobToAdd: Job = null;
   allJobs$: Observable<Job[]>;
   numberOfJobs = 0;
   oneJob: any;
@@ -71,7 +72,7 @@ export class AppComponent {
     title: string;
   };
 
-  getJobById(id: number): void{
+  getJobById(id: number): void {
     this.service.getJobById(id).subscribe(job => {
       this.oneJob = job;
     });
@@ -109,22 +110,37 @@ export class AppComponent {
   }
 
   onSelect(j: Job): void {
-    this.selectedJob = j;
-    this.form.patchValue({
-      notification: j.notification,
-    });
+    if (this.jobToAdd === null) {
+      this.selectedJob = j;
+      this.form.patchValue({
+        notification: j.notification,
+      });
+    } else {
+      this.jobToAdd = null;
+    }
   }
 
   onAdd(): void {
-    this.jobToAdd = ({
-      id: null,
-      title: 'Type in title...',
-      description: 'Description...',
-      priority: 0,
-      notification: false,
-      deadline: null,
-      ended: false,
-    });
+    if (this.selectedJob === null) {
+      this.form.patchValue({
+        notification: false,
+        priority: 0,
+        deadline: null,
+        description: '',
+        title: ''
+      });
+      this.jobToAdd = ({
+        id: null,
+        title: 'Type in title...',
+        description: 'Description...',
+        priority: 0,
+        notification: false,
+        deadline: null,
+        ended: false,
+      });
+    } else {
+      this.selectedJob = null;
+    }
   }
 
   readForm(): Job {
@@ -169,7 +185,7 @@ export class AppComponent {
       .subscribe((val) => {
         this.service.getAllJobsUnsorted();
         this.service.jobsUnsorted.filter(vale => {
-          if (vale.ended === true && vale.notification === true){
+          if (vale.ended === true && vale.notification === true) {
             const sound = new Howl({
               src: ['/assets/notify.mp3']
             });
@@ -184,7 +200,8 @@ export class AppComponent {
   selector: 'dialog-error-action',
   templateUrl: 'dialog-error-action.html',
 })
-export class DialogErrorAction {}
+export class DialogErrorAction {
+}
 
 @Pipe({
   name: 'split'
