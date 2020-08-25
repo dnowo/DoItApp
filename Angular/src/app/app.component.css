@@ -17,7 +17,7 @@ input {
   color: black;
 }
 table{
-  background: linear-gradient(-15deg, rgb(128, 93, 87), rgb(146, 105, 78), rgb(81, 43, 88), rgb(44, 0, 62));
+  background: linear-gradient(-15deg, rgba(191, 76, 76, 0.3), rgba(196, 126, 84, 0.3), rgba(133, 85, 133, 0.3), rgba(101, 101, 172, 0.3));
   background-size: 400% 400%;
   animation: gradient 5s ease infinite;
   border-radius: 1rem;
@@ -38,9 +38,7 @@ table{
     background-position: 0% 50%;
   }
 }
-thead{
-  /*border: 1px solid #fff!important;*/
-}
+
 .open ul.dropdown-menu {
   display: block;
 }
@@ -51,10 +49,8 @@ thead{
   padding-right: 1px;
 }
 .color-form {color: black;}
-.float{
+.float {
   position:fixed;
-  /*width:10%;*/
-  /*height:10%;*/
   bottom:3%;
   right:3%;
   background-color: rgb(164, 131, 52);
@@ -82,70 +78,7 @@ thead{
 ::ng-deep.mat-form-field .mat-form-field-flex{
     background-color: white !important;
 }
-.jello-horizontal {
-  -webkit-animation: jello-horizontal 0.9s both;
-  animation: jello-horizontal 0.9s both;
-}
-@-webkit-keyframes jello-horizontal {
-  0% {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-  }
-  30% {
-    -webkit-transform: scale3d(1.25, 0.75, 1);
-    transform: scale3d(1.25, 0.75, 1);
-  }
-  40% {
-    -webkit-transform: scale3d(0.75, 1.25, 1);
-    transform: scale3d(0.75, 1.25, 1);
-  }
-  50% {
-    -webkit-transform: scale3d(1.15, 0.85, 1);
-    transform: scale3d(1.15, 0.85, 1);
-  }
-  65% {
-    -webkit-transform: scale3d(0.95, 1.05, 1);
-    transform: scale3d(0.95, 1.05, 1);
-  }
-  75% {
-    -webkit-transform: scale3d(1.05, 0.95, 1);
-    transform: scale3d(1.05, 0.95, 1);
-  }
-  100% {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-  }
-}
-@keyframes jello-horizontal {
-  0% {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-  }
-  30% {
-    -webkit-transform: scale3d(1.25, 0.75, 1);
-    transform: scale3d(1.25, 0.75, 1);
-  }
-  40% {
-    -webkit-transform: scale3d(0.75, 1.25, 1);
-    transform: scale3d(0.75, 1.25, 1);
-  }
-  50% {
-    -webkit-transform: scale3d(1.15, 0.85, 1);
-    transform: scale3d(1.15, 0.85, 1);
-  }
-  65% {
-    -webkit-transform: scale3d(0.95, 1.05, 1);
-    transform: scale3d(0.95, 1.05, 1);
-  }
-  75% {
-    -webkit-transform: scale3d(1.05, 0.95, 1);
-    transform: scale3d(1.05, 0.95, 1);
-  }
-  100% {
-    -webkit-transform: scale3d(1, 1, 1);
-    transform: scale3d(1, 1, 1);
-  }
-}
+
 .borderless td, .borderless th {
   border: none;
 }
@@ -157,7 +90,7 @@ thead{
 }
 .strikethrough {
   /*text-decoration: line-through;*/
-  color: rosybrown;
+  color: #8a8787;
 }
 .shake-horizontal:hover {
   -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;

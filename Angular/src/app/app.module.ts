@@ -25,11 +25,13 @@ import {MatPaginatorModule} from '@angular/material/paginator';
 import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModule} from '@angular-material-components/datetime-picker';
 
 import {SplitPipe} from './app.component';
+import { CfooterComponent } from './cfooter/cfooter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SplitPipe
+    SplitPipe,
+    CfooterComponent
   ],
 
   imports: [

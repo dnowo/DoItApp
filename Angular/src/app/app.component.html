@@ -1,6 +1,6 @@
 <header>
   <div class="container">
-    <h1 class="text-center mt-md-5 jello-horizontal font-gothic">{{title}}</h1>
+    <h1 class="text-center font-gothic" style="margin-top: 3%;">{{title}}</h1>
   </div>
 </header>
 <main>
@@ -67,18 +67,19 @@
           <div class="form-group">
             <div class="col-md-5 mb-5">
               <mat-form-field  style="width:100%" appearance="fill" >
-                <mat-label>{{selectedJob.title}}</mat-label>
+                <mat-label>Title</mat-label>
                 <input matInput type="text"
                        formControlName="title"
                        name="given-title"
-                       autocomplete="given-title">
+                       autocomplete="given-title"
+                       [(ngModel)]="selectedJob.title">
               </mat-form-field>
             </div>
 
             <div class="col-md-4 mb-5">
               <mat-form-field style="width:100%" appearance="fill" class="full-width">
-              <mat-label>{{ selectedJob.deadline | split:"T"}}</mat-label>
-              <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date">
+              <mat-label>Deadline</mat-label>
+              <input matInput [ngxMatDatetimePicker]="picker" formControlName="deadline" placeholder="Choose a date" [(ngModel)]="selectedJob.deadline">
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <ngx-mat-datetime-picker #picker>
               </ngx-mat-datetime-picker>
@@ -89,8 +90,8 @@
 
             <div class="col-md-3 mb-5">
               <mat-form-field style="width:100%" appearance="fill">
-                <mat-label>{{ selectedJob.priority === 1 ? 'High' : (selectedJob.priority === 2 ? 'Medium' : (selectedJob.priority === 3 ? 'Low' : 'None'))}}</mat-label>
-                <mat-select formControlName="priority">
+                <mat-label>Priority</mat-label>
+                <mat-select [(ngModel)]="selectedJob.priority" formControlName="priority">
                   <mat-option value="1">High</mat-option>
                   <mat-option value="2">Medium</mat-option>
                   <mat-option value="3">Low</mat-option>
@@ -103,8 +104,8 @@
           <div class="form-row">
             <div class="col-md-12 mb-10">
               <mat-form-field style="width:100%" appearance="fill">
-                <mat-label>{{selectedJob.description}}</mat-label>
-                <textarea style="color: black;" formControlName="description" matInput></textarea>
+                <mat-label>Description</mat-label>
+                <textarea style="color: black;" formControlName="description" matInput [(ngModel)]="selectedJob.description"></textarea>
               </mat-form-field>
             </div>
           </div>
@@ -208,5 +209,8 @@
   </section>
 </main>
 
+<footer>
+  <app-cfooter></app-cfooter>
+</footer>
 
 <router-outlet></router-outlet>
