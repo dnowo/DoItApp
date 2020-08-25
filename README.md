@@ -2,7 +2,7 @@
  Main page
 <a href="https://github.com/dnowo/"><img src="https://i.imgur.com/zM47nD0.png" title="DoItApp" alt="DoItApp"></a>
 <br />
- Selected job menu.
+ Selected job menu. <br/>
  <a href="https://github.com/dnowo/"><img src="https://i.imgur.com/2V7ihfu.png" title="DoItApp" alt="DoItApp"></a>
 <br />
  Add / edit job popup form.<br/>
