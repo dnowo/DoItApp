@@ -12,9 +12,9 @@
 
 # Features
 
-  - REST API provided by Spring server.
+  - REST API provided by Spring backend server.
   - JWToken authorization.
   - Sound notification while job time is done, every 5 secs.
   - Adding / editing / deleting jobs.
   - Turning on/off notifications, by clicking job dropdown arrow. While notificate is ON, text changes to 'Turn OFF Notification'.
-  - Angular material design.
+  - Angular material design and bootstrap front-end.
