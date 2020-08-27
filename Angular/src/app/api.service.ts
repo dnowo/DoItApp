@@ -43,7 +43,7 @@ export class ApiService {
 
   public getAllJobs(page: number): Observable<Job[]> {
     const headers = this.generateAuthorizedHeader();
-    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page, {headers}).subscribe(j => {
+    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page, { headers }).subscribe(j => {
       if (j.length > 0){
         this.jobs = j;
         this.jobSubject.next(j);
@@ -56,14 +56,14 @@ export class ApiService {
 
   public getAllJobsUnsorted() {
     const headers = this.generateAuthorizedHeader();
-    this.http.get<Job[]>(this.url + 'api/job/unsorted', {headers}).subscribe(j => {
+    this.http.get<Job[]>(this.url + 'api/job/unsorted', { headers }).subscribe(j => {
       this.jobsUnsorted = j;
     });
   }
 
   public getJobById(id: number): Observable<Job> {
     const headers = this.generateAuthorizedHeader();
-    return this.http.get<Job>(this.url + 'api/job/' + id, {headers});
+    return this.http.get<Job>(this.url + 'api/job/' + id, { headers });
   }
 
   public addJob(job: Job): Observable<Job> {
@@ -72,7 +72,7 @@ export class ApiService {
     this.jobs.push(job);
     this.jobSubject.next(this.jobs);
     const headers = this.generateAuthorizedHeader();
-    return this.http.post<Job>(this.url + 'api/job/add', job, {headers});
+    return this.http.post<Job>(this.url + 'api/job/add', job, { headers });
   }
 
   public editJob(job: Job): Observable<Job> {

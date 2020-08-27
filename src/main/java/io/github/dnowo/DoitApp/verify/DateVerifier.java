@@ -14,10 +14,6 @@ import java.util.List;
 public class DateVerifier {
     private final JobService jobService;
 
-
-    /**TODO:
-     * Priority : none.
-     */
     public void verifyJobTime(List<Job> jobsFromDatabase){
         LocalDateTime dateTimeNow = LocalDateTime.now();
         String time = dateTimeNow.format(Constants.DATE_FORMAT);

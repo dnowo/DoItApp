@@ -3,11 +3,12 @@ package io.github.dnowo.DoitApp.security;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import io.github.dnowo.DoitApp.Constants;
+import io.github.dnowo.DoitApp.service.UserDetailsServiceCustom;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 
@@ -19,12 +20,13 @@ import java.io.IOException;
 
 public class JwtObjectAuthFilter extends BasicAuthenticationFilter {
 
-    private final UserDetailsService userDetailsService;
+    @Autowired
+    private final UserDetailsServiceCustom userDetailsService;
+
     private final String secret;
 
     public JwtObjectAuthFilter(AuthenticationManager authenticationManager,
-                               UserDetailsService userDetailsService,
-                               String secret) {
+                               UserDetailsServiceCustom userDetailsService, String secret) {
         super(authenticationManager);
         this.userDetailsService = userDetailsService;
         this.secret = secret;

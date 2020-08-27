@@ -1,13 +1,13 @@
 package io.github.dnowo.DoitApp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.dnowo.DoitApp.Constants;
+import io.github.dnowo.DoitApp.model.ERole;
+import io.github.dnowo.DoitApp.service.UserDetailsServiceCustom;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,7 +16,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.provisioning.UserDetailsManager;
-import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
 import javax.sql.DataSource;
 
@@ -30,27 +29,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final RestAuthSuccessHandler loginSuccess;
     private final String secret;
 
+    private final UserDetailsServiceCustom userDetailsService;
+
     @Autowired
     public SecurityConfig(DataSource dataSource,
                           ObjectMapper objectMapper,
                           RestAuthFailureHandler loginFailure,
                           RestAuthSuccessHandler loginSuccess,
-                          @Value("${jwt.secret}") String secret) {
+                          @Value("${jwt.secret}") String secret,
+                          UserDetailsServiceCustom userDetailsService) {
         this.dataSource = dataSource;
         this.objectMapper = objectMapper;
         this.loginFailure = loginFailure;
         this.loginSuccess = loginSuccess;
         this.secret = secret;
+        this.userDetailsService = userDetailsService;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.jdbcAuthentication()
-                .withDefaultSchema()
-                .dataSource(dataSource)
-                .withUser(Constants.LOGIN_AUTH)
-                .password("{bcrypt}" + new BCryptPasswordEncoder().encode(Constants.PASSWORD_AUTH))
-                .roles("ADMIN");
+//        auth.jdbcAuthentication()
+//                .withDefaultSchema()
+//                .dataSource(dataSource)
+//                .withUser(Constants.LOGIN_AUTH)
+//                .password("{bcrypt}" + new BCryptPasswordEncoder().encode(Constants.PASSWORD_AUTH))
+//                .roles("ADMIN");
+        auth.userDetailsService(userDetailsService)
+                .passwordEncoder(bCryptPasswordEncoder());
     }
 
     @Override
@@ -66,6 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/swagger-resources/**").permitAll()
                 .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/register").permitAll()
                 .anyRequest().authenticated()
                 .and()
 
@@ -74,13 +80,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
 
                 //Login JSON authentication
-                .formLogin().permitAll().and()
+                .formLogin().permitAll()
+                .and()
                 .addFilter(authFilter())
-                .addFilter(new JwtObjectAuthFilter(authenticationManager(), userDetailsManager(), secret))
+                .addFilter(new JwtObjectAuthFilter(authenticationManager(), userDetailsService, secret))
 
                 //For REST-API error response 401.
                 .exceptionHandling()
-                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+//                .authenticationEntryPoint(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED))
+                .authenticationEntryPoint(new AuthenticationEntryPointJwt())
                 //H2-Console
                 .and()
                 .headers().frameOptions().disable();
@@ -101,4 +109,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new JdbcUserDetailsManager(dataSource);
     }
 
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder(){
+        return new BCryptPasswordEncoder();
+    }
 }

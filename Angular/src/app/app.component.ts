@@ -29,7 +29,6 @@ export class AppComponent {
   constructor(private service: ApiService, public dialog: MatDialog) {
     this.delay(150);
     this.notify();
-
   }
 
   title = 'DoItApp';
