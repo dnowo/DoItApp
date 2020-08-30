@@ -37,13 +37,14 @@ export class ApiService {
 
   private generateAuthorizedHeader(): HttpHeaders {
     const tokenStr = 'Bearer ' + this.token;
+    console.log(this.token);
     const generatedHeader = new HttpHeaders().set('Authorization', tokenStr);
     return generatedHeader;
   }
 
   public getAllJobs(page: number): Observable<Job[]> {
     const headers = this.generateAuthorizedHeader();
-    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page, { headers }).subscribe(j => {
+    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page, {headers}).subscribe(j => {
       if (j.length > 0){
         this.jobs = j;
         this.jobSubject.next(j);

@@ -1,6 +1,7 @@
 package io.github.dnowo.DoitApp.service;
 
 import io.github.dnowo.DoitApp.model.Job;
+import io.github.dnowo.DoitApp.model.User;
 import io.github.dnowo.DoitApp.repository.JobRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -53,4 +54,5 @@ public class JobService {
     public List<Job> findAllUnsorted() {
         return jobRepository.findAll();
     }
+
 }

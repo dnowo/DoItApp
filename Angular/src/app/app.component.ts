@@ -27,7 +27,7 @@ import {filter} from 'rxjs/operators';
 export class AppComponent {
 
   constructor(private service: ApiService, public dialog: MatDialog) {
-    this.delay(150);
+    this.delay(1050);
     this.notify();
   }
 

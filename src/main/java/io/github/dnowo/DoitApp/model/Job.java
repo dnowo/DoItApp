@@ -20,12 +20,18 @@ public class Job {
     private Long id;
     private Integer priority;
     private String title;
+    @Lob
+    @Column
     private String description;
     private LocalDateTime deadline;
     private Boolean notification;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean ended;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
     @Override
     public String toString() {
