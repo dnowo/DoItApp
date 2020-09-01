@@ -21,7 +21,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr [ngClass]="j.ended ? 'shake-horizontal' : 'null'" class="dropdown" dropdown (load)="getJobs(numberOfJobs)" *ngFor="let j of allJobs$ | async">
+      <tr [ngClass]="j.ended ? 'shake-horizontal' : 'null'" class="dropdown" dropdown (load)="getJobs(pageNumber)" *ngFor="let j of allJobs$ | async">
         <td>
           <div class="btn-group dropdown"  dropdown>
             <button dropdownToggle role="button" type="button" class="btn btn-default dropdown-toggle"
@@ -50,12 +50,22 @@
   </div>
   <section id="page">
     <div class="container">
-      <button (click)="numberOfJobs = numberOfJobs - 1; getJobs(numberOfJobs)" style="margin-bottom: 1%" mat-mini-fab color="">
-        <mat-icon>chevron_left</mat-icon>
-      </button>
-      <button (click)="numberOfJobs = numberOfJobs + 1; getJobs(numberOfJobs)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab color="">
-        <mat-icon>chevron_right</mat-icon>
-      </button>
+      <div class="row">
+        <div class="col-lg-1">
+          <button (click)="checkPage(); getJobs(pageNumber)" style="margin-bottom: 1%" mat-mini-fab color="">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+        </div>
+        <div class="col-lg-1" style="margin-top: 1%">
+        <span class="font-gothic"> Page: {{pageNumber}} </span>
+        </div>
+        <div class="col-lg-1">
+        <button (click)="checkPage(); getJobs(pageNumber)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab color="">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+        </div>
+      </div>
+
     </div>
   </section>
 

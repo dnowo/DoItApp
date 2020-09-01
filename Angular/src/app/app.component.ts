@@ -35,8 +35,9 @@ export class AppComponent {
   selectedJob: Job = null;
   jobToAdd: Job = null;
   allJobs$: Observable<Job[]>;
-  numberOfJobs = 0;
+  pageNumber = 0;
   oneJob: any;
+  maxPage: number;
 
   notifyCheck: any;
   notifyOnOff: any;
@@ -79,14 +80,24 @@ export class AppComponent {
 
   async delay(ms: number) {
     await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => {
-      this.getJobs(this.numberOfJobs);
+      this.getJobs(this.pageNumber);
     });
 
   }
 
   getJobs(page: number): void {
     this.allJobs$ = this.service.getAllJobs(page);
+    this.maxPage = this.service.jobs.length % 5;
   }
+
+  checkPage(): void {
+    console.log(this.maxPage);
+    if (this.pageNumber <= this.maxPage ) {
+      this.pageNumber++;
+    } else {
+      this.pageNumber--;
+    }
+}
 
   addJob(): void {
     this.jobAddEdit = this.readForm();

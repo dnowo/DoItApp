@@ -3,36 +3,35 @@ package io.github.dnowo.DoitApp.service;
 import io.github.dnowo.DoitApp.model.Job;
 import io.github.dnowo.DoitApp.model.User;
 import io.github.dnowo.DoitApp.repository.JobRepository;
+import io.github.dnowo.DoitApp.verify.DateVerifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class JobService {
-    private static final int PAGE_SIZE = 5;
+    private static final int PAGE_SIZE = 6;
     private final JobRepository jobRepository;
+    private final DateVerifier dateVerifier;
 
-    public List<Job> getJobs(int page){
-        return jobRepository.findAllJobSorted(PageRequest.of(page, PAGE_SIZE));
-    }
-
-    @Transactional
-    public Job changeEndedState(Job job){
-        Job editedJob = jobRepository.findById(job.getId()).orElseThrow();
-        editedJob.setEnded(true);
-        return editedJob;
-    }
-
-    public Job addJob(Job job) {
-        return jobRepository.save(job);
-    }
-
-    public void deleteJob(Long id) {
-        jobRepository.deleteById(id);
+    public List<Job> getJobs(int page, User user){
+        List<Job> forUser = jobRepository.findAll(PageRequest.of(page,
+                        PAGE_SIZE,
+                        Sort.by(Sort.Order.asc("ended"),
+                                Sort.Order.desc("deadline"),
+                                Sort.Order.asc("priority"))))
+                .stream()
+                .filter(job ->
+                        job.getUser().getId().equals(user.getId()))
+                .collect(Collectors.toList());
+        dateVerifier.verifyJobTime(forUser);
+        return forUser;
     }
 
     @Transactional
@@ -51,8 +50,14 @@ public class JobService {
         return jobRepository.getJobById(id);
     }
 
-    public List<Job> findAllUnsorted() {
-        return jobRepository.findAll();
+    public List<Job> findAllUnsorted() { return dateVerifier.verifyJobTime(jobRepository.findAll()); }
+
+    public Job addJob(Job job) {
+        return jobRepository.save(job);
+    }
+
+    public void deleteJob(Long id) {
+        jobRepository.deleteById(id);
     }
 
 }
