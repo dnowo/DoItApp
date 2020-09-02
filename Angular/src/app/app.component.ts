@@ -1,10 +1,4 @@
 import {Component, OnInit, Pipe, PipeTransform} from '@angular/core';
-import {ApiService, Job} from './api.service';
-import {Observable, interval} from 'rxjs';
-import {animate, style, transition, trigger} from '@angular/animations';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {MatDialog} from '@angular/material/dialog';
-import {Howl} from 'howler';
 import {TokenService} from './_service/token.service';
 
 @Component({

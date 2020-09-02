@@ -40,13 +40,18 @@ public class JobController {
     }
 
     @PostMapping("/api/job/add")
-    public Job addJob(@RequestBody Job job){
+    public Job addJob(@RequestBody Job job,
+                      @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated) {
+        User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
+        job.setUser(user);
         return jobService.addJob(job);
     }
 
     @DeleteMapping("/api/job/delete/{id}")
-    public void deleteJob(@PathVariable Long id){
-        jobService.deleteJob(id);
+    public void deleteJob(@PathVariable Long id,
+                          @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated) {
+        User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
+        jobService.deleteJob(id, user);
     }
 
     @PutMapping("/api/job/edit")

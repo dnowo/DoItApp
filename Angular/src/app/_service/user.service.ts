@@ -28,6 +28,57 @@ export class UserService {
     return this.jobObservable$;
   }
 
+  public addJob(job: Job): Observable<Job> {
+    // @ts-ignore
+    job.deadline = this.convert(job.deadline);
+    this.jobs.push(job);
+    this.jobSubject.next(this.jobs);
+    return this.http.post<Job>(API + 'api/job/add', job);
+  }
+
+  public deleteJob(job: Job): Observable<Job> {
+    const index: number = this.jobs.indexOf(job);
+    if (index !== -1) {
+      this.jobs.splice(index, 1);
+    }
+    this.jobSubject.next(this.jobs);
+    return this.http.delete<Job>(API + 'api/job/delete/' + job.id);
+  }
+
+  public editJob(job: Job): Observable<Job> {
+    const find: Job = this.jobs.find(x => x.id === job.id);
+    const index: number = this.jobs.indexOf(find);
+
+    // @ts-ignore
+    job.deadline = this.convert(job.deadline);
+    console.log(job.deadline);
+    if (index !== -1) {
+      this.jobs[index].title = job.title;
+      this.jobs[index].description = job.description;
+      this.jobs[index].deadline = job.deadline;
+      this.jobs[index].notification = job.notification;
+      this.jobs[index].priority = job.priority;
+      this.jobs[index].ended = job.ended;
+      this.jobSubject.next(this.jobs);
+    }
+    return this.http.put<Job>(API + 'api/job/edit', job );
+  }
+
+  public getAllJobsUnsorted(): void {
+    this.http.get<Job[]>(API + 'api/job/unsorted').subscribe(j => {
+      this.jobsUnsorted = j;
+    });
+  }
+
+  public convert(str): string {
+    const date = new Date(str),
+      mnth = ('0' + (date.getMonth() + 1)).slice(-2),
+      day = ('0' + date.getDate()).slice(-2),
+      hour = date.getHours();
+    const mins = (date.getMinutes() < 10 ? '0' : '') + date.getMinutes();
+    const secs = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
+    return [date.getFullYear(), mnth, day].join('-') + 'T' + [hour, mins, secs].join(':');
+  }
 }
 
 export interface Job {

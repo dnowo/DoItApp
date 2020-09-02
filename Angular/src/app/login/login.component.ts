@@ -1,6 +1,5 @@
 import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {FormControl, FormGroup} from '@angular/forms';
-import {ApiService} from '../api.service';
 import {AuthorizeService} from '../_service/authorize.service';
 import {TokenService} from '../_service/token.service';
 
@@ -21,10 +20,6 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   roles: string[] = [];
 
-  @Input() error: string | null;
-
-  @Output() submitEM = new EventEmitter();
-
   constructor(private authService: AuthorizeService, private tokenStorage: TokenService) { }
 
   ngOnInit(): void {
@@ -36,7 +31,6 @@ export class LoginComponent implements OnInit {
 
   submit(): void {
     if (this.form.valid) {
-      this.submitEM.emit(this.form.value);
       this.authService
         .login(this.form)
         .subscribe(data => {
@@ -46,7 +40,7 @@ export class LoginComponent implements OnInit {
           this.isLoginFailed = false;
           this.isLogged = true;
           // this.roles = this.tokenStorage.getUser().roles;
-          window.location.reload();
+          window.location.href = '/home';
         });
     }
   }

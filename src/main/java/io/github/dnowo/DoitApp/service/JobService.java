@@ -3,6 +3,7 @@ package io.github.dnowo.DoitApp.service;
 import io.github.dnowo.DoitApp.model.Job;
 import io.github.dnowo.DoitApp.model.User;
 import io.github.dnowo.DoitApp.repository.JobRepository;
+import io.github.dnowo.DoitApp.repository.UserRepository;
 import io.github.dnowo.DoitApp.verify.DateVerifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -18,6 +19,7 @@ import java.util.stream.Collectors;
 public class JobService {
     private static final int PAGE_SIZE = 6;
     private final JobRepository jobRepository;
+    private final UserRepository userRepository;
     private final DateVerifier dateVerifier;
 
     public List<Job> getJobs(int page, User user){
@@ -56,8 +58,13 @@ public class JobService {
         return jobRepository.save(job);
     }
 
-    public void deleteJob(Long id) {
-        jobRepository.deleteById(id);
+    public void deleteJob(Long id, User user) {
+        Job job = jobRepository.findById(id).orElseThrow();
+        if (user.getId() == job.getUser().getId()) {
+            jobRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Cannot delete this job!");
+        }
     }
 
 }

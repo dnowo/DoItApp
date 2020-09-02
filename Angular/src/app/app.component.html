@@ -1,6 +1,13 @@
 <header>
   <div class="container">
-
+    <nav class="navbar navbar-inverse">
+        <ul class="nav navbar-nav">
+          <li><a id="len1" class="hoverable" href="/home">Home</a></li>
+          <li><a id="len2" class="hoverable" href="/profile">Profile</a></li>
+          <li><a id="len3" *ngIf="!userLogged" class="hoverable" href="/login">Login</a></li>
+          <li><a id="len4" *ngIf="!userLogged" class="hoverable" href="/register">Register</a></li>
+        </ul>
+    </nav>
   </div>
 </header>
 
