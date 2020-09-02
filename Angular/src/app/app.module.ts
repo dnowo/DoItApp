@@ -26,44 +26,53 @@ import {NgxMatDatetimePickerModule, NgxMatNativeDateModule, NgxMatTimepickerModu
 
 import {SplitPipe} from './app.component';
 import { CfooterComponent } from './cfooter/cfooter.component';
+import { LoginComponent } from './login/login.component';
+import {MatCardModule} from '@angular/material/card';
+import { HomeComponent } from './home/home.component';
+import { ProfileComponent } from './profile/profile.component';
+import {authInterceptorProviders} from './_service/auth-interceptor.service';
 
 @NgModule({
   declarations: [
     AppComponent,
     SplitPipe,
-    CfooterComponent
+    CfooterComponent,
+    LoginComponent,
+    HomeComponent,
+    ProfileComponent
   ],
 
-  imports: [
-    BrowserModule,
-    HttpClientModule,
-    AppRoutingModule,
-    BsDropdownModule.forRoot(),
-    TooltipModule.forRoot(),
-    ModalModule.forRoot(),
-    BrowserAnimationsModule,
-    FormsModule,
-    MatCheckboxModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatRadioModule,
-    MatDatepickerModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatDatepickerModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatNativeDateModule,
-    MatSelectModule,
-    MatTableModule,
-    MatPaginatorModule,
-    NgxMatDatetimePickerModule,
-    NgxMatTimepickerModule,
-    NgxMatNativeDateModule,
+    imports: [
+        BrowserModule,
+        HttpClientModule,
+        AppRoutingModule,
+        BsDropdownModule.forRoot(),
+        TooltipModule.forRoot(),
+        ModalModule.forRoot(),
+        BrowserAnimationsModule,
+        FormsModule,
+        MatCheckboxModule,
+        MatFormFieldModule,
+        MatInputModule,
+        MatIconModule,
+        MatRadioModule,
+        MatDatepickerModule,
+        ReactiveFormsModule,
+        MatButtonModule,
+        MatDatepickerModule,
+        MatButtonModule,
+        MatFormFieldModule,
+        MatNativeDateModule,
+        MatSelectModule,
+        MatTableModule,
+        MatPaginatorModule,
+        NgxMatDatetimePickerModule,
+        NgxMatTimepickerModule,
+        NgxMatNativeDateModule,
+        MatCardModule,
 
-  ],
-  providers: [],
+    ],
+  providers: [authInterceptorProviders],
   bootstrap: [AppComponent],
   exports: [
     SplitPipe

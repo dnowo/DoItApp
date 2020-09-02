@@ -1,0 +1,15 @@
+<section *ngIf="isLogged; else loggedOut">
+  <h1>Hello username</h1>
+  <button mat-raised-button
+          (click)="logout()"
+          color="accent"
+          type="submit"
+          style="width:100%">
+    Logout
+  </button>
+</section>
+<ng-template class="white" #loggedOut>
+
+  <header>Please login.</header>
+  Here loginpanel
+</ng-template>

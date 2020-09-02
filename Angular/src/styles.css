@@ -8,7 +8,20 @@ body  {
   height: 100%;
   background-size: 100% 100%;
   background-position: center center;
+  color: white;
+}
 
+header {
+  color: white;
+}
+button {
+  color: black;
+}
+.font-gothic {
+  font-family: Century Gothic,CenturyGothic,AppleGothic, sans-serif;
+}
+h1 {
+  font-size: xx-large;
   color: white;
 }
 

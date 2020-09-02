@@ -8,9 +8,11 @@ import {BehaviorSubject, Observable, Subscription} from 'rxjs';
 export class ApiService {
 
   authRequest: any = {
-    username: 'user',
-    password: 'doitapp'
+    username: 'x',
+    password: 'x'
   };
+  // authRequest: any;
+  logged: boolean;
 
   token: any;
   private url = 'http://localhost:8080/';
@@ -22,10 +24,15 @@ export class ApiService {
 
   constructor(private http: HttpClient) {
     this.getAccessToken(this.authRequest);
+    this.logged = false;
   }
 
   private generateToken(request): Observable<any> {
     return this.http.post(this.url + 'login', request, {responseType: 'text' as 'json'});
+  }
+
+  public setAuthRequest(request: any): void {
+    this.authRequest = request;
   }
 
   public getAccessToken(authRequest): void {
@@ -33,6 +40,9 @@ export class ApiService {
     resp.subscribe(data => {
       this.token = data;
     });
+    if (this.token != null) {
+      this.logged = true;
+    }
   }
 
   private generateAuthorizedHeader(): HttpHeaders {
@@ -43,7 +53,7 @@ export class ApiService {
 
   public getAllJobs(page: number): Observable<Job[]> {
     const headers = this.generateAuthorizedHeader();
-    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page + '&sort=asc', {headers}).subscribe(j => {
+    this.http.get<Job[]>(this.url + 'api/job/all' + '?page=' + page, {headers}).subscribe(j => {
       if (j.length > 0){
         this.jobs = j;
         this.jobSubject.next(j);
@@ -115,6 +125,14 @@ export class ApiService {
     return [date.getFullYear(), mnth, day].join('-') + 'T' + [hour, mins, secs].join(':');
   }
 
+  isLogged(): boolean{
+    return this.logged;
+  }
+
+  logout(): boolean {
+    this.logged = false;
+    return this.logged;
+  }
 }
 
 export interface Job {
