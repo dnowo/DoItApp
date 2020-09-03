@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {User, UserService} from '../_service/user.service';
 import {TokenService} from '../_service/token.service';
+import {JwtHelperService} from '@auth0/angular-jwt';
 
 @Component({
   selector: 'app-profile',
@@ -9,17 +10,22 @@ import {TokenService} from '../_service/token.service';
 })
 export class ProfileComponent implements OnInit {
   isLogged: boolean;
+  date: any;
+
   // tslint:disable-next-line:new-parens
   user: User = new class implements User {
     username: string;
     email: string;
   };
 
-  constructor(private userService: UserService, private tokenService: TokenService){}
+  constructor(private userService: UserService, private tokenService: TokenService, private jwtHelper: JwtHelperService){}
 
   ngOnInit(): void {
-    if (this.tokenService.getToken() != null) {
+    if (this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
+      this.isLogged = false;
+    } else {
       this.isLogged = true;
+      this.getTokenExpirationDate();
       this.getUserData();
     }
   }
@@ -34,7 +40,15 @@ export class ProfileComponent implements OnInit {
         }
       });
   }
+  getTokenExpirationDate(): void {
+    const token = this.tokenService.getToken();
+    const decodedToken = this.jwtHelper.decodeToken(token);
 
+    if (decodedToken.exp === undefined) { return null; }
+
+    this.date = new Date(0);
+    this.date.setUTCSeconds(decodedToken.exp);
+  }
   logout(): void {
     this.tokenService.logout();
     window.location.href = '/login';

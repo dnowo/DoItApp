@@ -32,6 +32,8 @@ import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import {authInterceptorProviders} from './_service/auth-interceptor.service';
 import {MatDividerModule} from '@angular/material/divider';
+import {JWT_OPTIONS, JwtHelperService, JwtModule} from '@auth0/angular-jwt';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +42,8 @@ import {MatDividerModule} from '@angular/material/divider';
     CfooterComponent,
     LoginComponent,
     HomeComponent,
-    ProfileComponent
+    ProfileComponent,
+    RegisterComponent
   ],
 
     imports: [
@@ -72,9 +75,10 @@ import {MatDividerModule} from '@angular/material/divider';
         NgxMatNativeDateModule,
         MatCardModule,
         MatDividerModule,
-
     ],
-  providers: [authInterceptorProviders],
+  providers: [authInterceptorProviders,
+    { provide: JWT_OPTIONS, useValue: JWT_OPTIONS },
+    JwtHelperService],
   bootstrap: [AppComponent],
   exports: [
     SplitPipe

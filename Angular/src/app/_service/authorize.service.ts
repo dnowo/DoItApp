@@ -24,6 +24,12 @@ export class AuthorizeService {
   }
 
   register(user: any): Observable<any> {
-    return null;
+    const registerRequest: any = {
+      username: user.value.username,
+      password: user.value.password,
+      email: user.value.email,
+      role: ['ROLE_USER']
+    };
+    return this.http.post(API + 'register', registerRequest, { responseType: 'text' as 'json' });
   }
 }

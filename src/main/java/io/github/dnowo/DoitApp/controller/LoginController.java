@@ -64,13 +64,13 @@ public class LoginController {
         } else {
             stringRoles.forEach(role -> {
                         switch (role) {
-                            case "ADMIN":
+                            case "ROLE_ADMIN":
                                 Role adminR = roleRepository
                                         .findByName(ERole.ROLE_ADMIN)
                                         .orElseThrow(() -> new RuntimeException("Role is not found!"));
                                 roles.add(adminR);
                                 break;
-                            case "USER":
+                            case "ROLE_USER":
                                 Role userR = roleRepository
                                         .findByName(ERole.ROLE_USER)
                                         .orElseThrow(() -> new RuntimeException("Role is not found!"));
