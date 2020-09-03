@@ -79,6 +79,12 @@ export class UserService {
     const secs = (date.getSeconds() < 10 ? '0' : '') + date.getSeconds();
     return [date.getFullYear(), mnth, day].join('-') + 'T' + [hour, mins, secs].join(':');
   }
+
+  public getUserData(): Observable<User> {
+    return this.http
+      .get<User>(API + 'api/user');
+  }
+
 }
 
 export interface Job {
@@ -90,3 +96,9 @@ export interface Job {
   notification: boolean;
   ended: boolean;
 }
+
+export interface User {
+  email: string;
+  username: string;
+}
+

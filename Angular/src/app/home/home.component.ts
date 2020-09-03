@@ -5,6 +5,7 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {UserService} from '../_service/user.service';
 import {animate, style, transition, trigger} from '@angular/animations';
 import {Howl} from 'howler';
+import {TokenService} from '../_service/token.service';
 
 @Component({
   selector: 'app-home',
@@ -30,7 +31,7 @@ export class HomeComponent implements OnInit {
   pageNumber = 0;
   oneJob: any;
   maxPage: number;
-
+  isLogged: boolean;
   notifyCheck: any;
   notifyOnOff: any;
 
@@ -64,26 +65,14 @@ export class HomeComponent implements OnInit {
     priority: number;
     title: string;
   };
-  private dialog: any;
 
-  constructor(private userService: UserService) { }
+  constructor(private userService: UserService, private tokenService: TokenService) {
+    this.isLogged = !!tokenService.getToken();
+  }
 
   ngOnInit(): void {
     this.getJobs(this.pageNumber);
   }
-
-  // getJobById(id: number): void {
-  //   this.service.getJobById(id).subscribe(job => {
-  //     this.oneJob = job;
-  //   });
-  // }
-
-  // async delay(ms: number) {
-  //   await new Promise(resolve => setTimeout(() => resolve(), ms)).then(() => {
-  //     this.getJobs(this.pageNumber);
-  //   });
-  //
-  // }
 
   getJobs(page: number): void {
     this.allJobs$ = this.userService.getAllJobs(page);

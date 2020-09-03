@@ -1,14 +1,55 @@
 <header>
   <div class="container">
-    <nav class="navbar navbar-inverse">
-        <ul class="nav navbar-nav">
-          <li><a id="len1" class="hoverable" href="/home">Home</a></li>
-          <li><a id="len2" class="hoverable" href="/profile">Profile</a></li>
-          <li><a id="len3" *ngIf="!userLogged" class="hoverable" href="/login">Login</a></li>
-          <li><a id="len4" *ngIf="!userLogged" class="hoverable" href="/register">Register</a></li>
-        </ul>
+    <nav class="navbar ml-auto">
+      <div class="row">
+        <div class="col-lg-3 padding">
+          <a id="home" class="hoverable" href="/home">
+          <button mat-fab
+                  color="primary"
+                  aria-label="Navigate to home"
+                  data-toggle="tooltip" data-placement="bottom" title="To-do list">
+            <mat-icon>rule</mat-icon>
+          </button>
+          </a>
+        </div>
+
+        <div class="col-lg-3 padding" *ngIf="userLogged">
+          <a id="profile" class="hoverable" href="/profile">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to profile"
+                    data-toggle="tooltip" data-placement="bottom" title="Profile">
+              <mat-icon>face</mat-icon>
+            </button>
+          </a>
+        </div>
+
+        <div class="col-lg-3 padding" *ngIf="!userLogged">
+          <a id="login" class="hoverable" href="/login">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to login panel"
+                    data-toggle="tooltip" data-placement="bottom" title="Login">
+              <mat-icon>login</mat-icon>
+            </button>
+          </a>
+        </div>
+
+        <div class="col-lg-3 padding" *ngIf="!userLogged">
+          <a id="register" class="hoverable" href="/register">
+            <button mat-fab
+                    color="primary"
+                    aria-label="Navigate to registration"
+                    data-toggle="tooltip" data-placement="bottom" title="Register new account">
+              <mat-icon>how_to_reg</mat-icon>
+            </button>
+          </a>
+        </div>
+
+      </div>
     </nav>
   </div>
+
 </header>
 
 <main>

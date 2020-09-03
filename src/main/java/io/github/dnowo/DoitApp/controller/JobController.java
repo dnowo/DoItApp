@@ -4,22 +4,18 @@ import io.github.dnowo.DoitApp.model.Job;
 import io.github.dnowo.DoitApp.model.User;
 import io.github.dnowo.DoitApp.repository.UserRepository;
 import io.github.dnowo.DoitApp.service.JobService;
-import io.github.dnowo.DoitApp.verify.DateVerifier;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
 public class JobController {
     private final JobService jobService;
     private final UserRepository userRepository;
-
 
     @GetMapping("/api/job/all")
     public List<Job> getJobs(@RequestParam(required = false) int page,

@@ -91,8 +91,13 @@ table{
 }
 .strikethrough {
   /*text-decoration: line-through;*/
-  color: #8a8787;
+  color: #b0afaf;
 }
+.strikethrough:hover {
+  color: #343333;
+  transition-duration: 0.3s;
+}
+
 .shake-horizontal:hover {
   -webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
   animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;

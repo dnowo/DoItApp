@@ -31,6 +31,7 @@ import {MatCardModule} from '@angular/material/card';
 import { HomeComponent } from './home/home.component';
 import { ProfileComponent } from './profile/profile.component';
 import {authInterceptorProviders} from './_service/auth-interceptor.service';
+import {MatDividerModule} from '@angular/material/divider';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import {authInterceptorProviders} from './_service/auth-interceptor.service';
         NgxMatTimepickerModule,
         NgxMatNativeDateModule,
         MatCardModule,
+        MatDividerModule,
 
     ],
   providers: [authInterceptorProviders],

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {UserService} from '../_service/user.service';
+import {User, UserService} from '../_service/user.service';
 import {TokenService} from '../_service/token.service';
 
 @Component({
@@ -9,16 +9,36 @@ import {TokenService} from '../_service/token.service';
 })
 export class ProfileComponent implements OnInit {
   isLogged: boolean;
+  // tslint:disable-next-line:new-parens
+  user: User = new class implements User {
+    username: string;
+    email: string;
+  };
 
   constructor(private userService: UserService, private tokenService: TokenService){}
 
   ngOnInit(): void {
-    if (this.tokenService.getToken() != null) { this.isLogged = true; }
+    if (this.tokenService.getToken() != null) {
+      this.isLogged = true;
+      this.getUserData();
+    }
+  }
+
+  private getUserData(): void{
+    this.userService.getUserData()
+      .subscribe(u => {
+        this.user = u;
+      }, error => {
+        if (error.status === 401) {
+          this.logout();
+        }
+      });
   }
 
   logout(): void {
     this.tokenService.logout();
-    window.location.reload();
+    window.location.href = '/login';
   }
 
 }
+

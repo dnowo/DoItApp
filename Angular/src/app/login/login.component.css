@@ -13,13 +13,18 @@ mat-card-title,
 mat-card-content {
   display: flex;
   justify-content: center;
+
+}
+mat-card {
+  background: #d6d6d6;
 }
 
 .error {
   padding: 16px;
   width: 300px;
+  border-radius: 5px;
   color: white;
-  background-color: red;
+  background-color: #a01f1f;
 }
 
 .button {

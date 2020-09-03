@@ -1,5 +1,8 @@
-<div class="container">
-  <table class="table borderless font-gothic">
+<div class="container" *ngIf="!isLogged">
+  <center><h3 class="font-gothic">You have to be logged in to see your jobs!</h3></center>
+</div>
+<div class="container" *ngIf="isLogged">
+  <table class="table borderless font-gothic" >
     <caption>
       <h2>List of your jobs</h2>
     </caption>
@@ -14,7 +17,7 @@
     </tr>
     </thead>
     <tbody>
-    <tr [ngClass]="j.ended ? 'shake-horizontal' : 'null'" class="dropdown" dropdown (load)="getJobs(pageNumber)"
+    <tr class="dropdown" dropdown (load)="getJobs(pageNumber)"
         *ngFor="let j of allJobs$ | async">
       <td>
         <div class="btn-group dropdown" dropdown>
@@ -45,29 +48,28 @@
     </tr>
     </tbody>
   </table>
+
+  <section id="pagination">
+      <div class="row">
+        <div class="col-lg-1">
+          <button (click)="goPrevPage(); getJobs(pageNumber)" style="margin-bottom: 1%" mat-mini-fab color="">
+            <mat-icon>chevron_left</mat-icon>
+          </button>
+        </div>
+        <div class="col-lg-1" style="margin-top: 1%">
+          <span class="font-gothic"> Page: {{pageNumber}} </span>
+        </div>
+        <div class="col-lg-1">
+          <button (click)="goNextPage(); getJobs(pageNumber)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab
+                  color="">
+            <mat-icon>chevron_right</mat-icon>
+          </button>
+        </div>
+      </div>
+  </section>
 </div>
 
-<section id="pagination">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-1">
-        <button (click)="goPrevPage(); getJobs(pageNumber)" style="margin-bottom: 1%" mat-mini-fab color="">
-          <mat-icon>chevron_left</mat-icon>
-        </button>
-      </div>
-      <div class="col-lg-1" style="margin-top: 1%">
-        <span class="font-gothic"> Page: {{pageNumber}} </span>
-      </div>
-      <div class="col-lg-1">
-        <button (click)="goNextPage(); getJobs(pageNumber)" style="margin-left: 1%; margin-bottom:1%" mat-mini-fab
-                color="">
-          <mat-icon>chevron_right</mat-icon>
-        </button>
-      </div>
-    </div>
 
-  </div>
-</section>
 
 <section id="editPanel">
   <div *ngIf="selectedJob" [@slideInOut] class="container">
@@ -97,7 +99,6 @@
             </mat-form-field>
           </div>
 
-
           <div class="col-md-3 mb-5">
             <mat-form-field style="width:100%" appearance="fill">
               <mat-label>Priority</mat-label>
@@ -108,7 +109,6 @@
               </mat-select>
             </mat-form-field>
           </div>
-
         </div>
 
         <div class="form-row">
@@ -146,7 +146,7 @@
 </section>
 
 <section id="addPanel">
-  <button (click)="onAdd()" class="float" mat-fab aria-label="Add a new job">
+  <button (click)="onAdd()" *ngIf="isLogged" class="float" mat-fab aria-label="Add a new job">
     <mat-icon>add</mat-icon>
   </button>
 
@@ -185,7 +185,6 @@
               </mat-select>
             </mat-form-field>
           </div>
-
         </div>
 
         <div class="form-row">
@@ -204,7 +203,6 @@
               class="form-check-input" type="checkbox" value="" id="notificationCheckAdd">Notification
             </mat-checkbox>
           </div>
-
         </div>
 
         <div class="form-row">

@@ -1,6 +1,18 @@
-h1, h2, h3, h4, h5, h6 {
+h { color: white }
+.center-all {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.center {
+  align-items: center;
+  justify-content: center;
+}
+.text {
   color: white;
 }
-.white {
-  color: white;
+.colored-profile-info {
+  background: rgba(63, 63, 64, 0.7);
+  padding: 10px;
+  border-radius: 5px;
 }
