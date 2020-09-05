@@ -7,10 +7,17 @@ Do it app, is an app where anyone can sign up, and start adding works daily / mo
   - Pagination!
 
 #### Features
-You can also:
+
   - Add, delete, edit your work.
   - Pick work-end date and time.
   - Check your profile data.
+  - Sorting by priority, end-date, and finished jobs.
+  - Turn ON notifications.
+  
+#### To Do
+
+- Repeatable job.
+- Fix session issue.
 
 ### Technologies
 
