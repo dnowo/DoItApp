@@ -27,9 +27,30 @@ Do it app project uses:
 
 ### Demo
 
+Main page with all jobs.
+
+![Homepage](./images/home.png)
+
+Option panel for single job.
+
+![Options panel](./images/option.png)
+
+Edit and add form, looks the same.
+
+![Form edit/add](./images/form.png)
+
+Profile page.
+
+![Profile](./images/profile.png)
+
 Login panel
 
-![Login Panel](./images/login.png)
+![Login panel](./images/login.png)
+
+Register panel
+
+![Register panel](./images/register.png)
+
 
 
 ### Installation and setup
