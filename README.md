@@ -4,7 +4,9 @@ Do it app, is an app where anyone can sign up, and start adding works daily / mo
 # New Features!
 
   - Login and register a new account!
+  - Pagination!
 
+#### Features
 You can also:
   - Add, delete, edit your work.
   - Pick work-end date and time.
