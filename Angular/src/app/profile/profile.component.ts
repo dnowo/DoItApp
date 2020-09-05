@@ -37,6 +37,7 @@ export class ProfileComponent implements OnInit {
       }, error => {
         if (error.status === 401) {
           this.logout();
+          // TODO: or session expired
         }
       });
   }
