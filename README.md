@@ -3,6 +3,7 @@ Do it app, is an app where anyone can sign up, and start adding works daily / mo
 
 # New Features!
 
+  - Repeatable jobs!
   - Login and register a new account!
   - Pagination!
 
