@@ -12,12 +12,8 @@ Do it app, is an app where anyone can sign up, and start adding works daily / mo
   - Pick work-end date and time.
   - Check your profile data.
   - Sorting by priority, end-date, and finished jobs.
-  - Turn ON notifications.
+  - Turn ON repeatable job.
   
-#### To Do
-
-- Repeatable job.
-- Fix session issue.
 
 ### Technologies
 

@@ -20,11 +20,10 @@ import java.io.IOException;
 
 public class JwtObjectAuthFilter extends BasicAuthenticationFilter {
 
-    @Autowired
     private final UserDetailsServiceCustom userDetailsService;
-
     private final String secret;
 
+    @Autowired
     public JwtObjectAuthFilter(AuthenticationManager authenticationManager,
                                UserDetailsServiceCustom userDetailsService, String secret) {
         super(authenticationManager);

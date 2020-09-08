@@ -6,7 +6,7 @@ INSERT INTO USER_ROLES(user_id, role_id) VALUES (1,1);
 INSERT INTO USER_ROLES(user_id, role_id) VALUES (2,2);
 
 insert into jobs(
-    priority, title, description, deadline, notification, user_id
+    priority, title, description, deadline, repeatable, user_id
 ) values (
     1,
     'A very important work to do!',
@@ -24,7 +24,7 @@ insert into jobs(
 );
 
 insert into jobs(
-    priority, title, description, deadline, notification, user_id
+    priority, title, description, deadline, repeatable, user_id
 ) values (
     1,
     'Learn Java!',
@@ -36,7 +36,7 @@ insert into jobs(
 );
 
 insert into jobs(
-    priority, title, description, deadline, notification, user_id
+    priority, title, description, deadline, repeatable, user_id
 ) values (
     2,
     'Learn SpringBoot!',
@@ -49,7 +49,7 @@ insert into jobs(
 );
 
 insert into jobs(
-    priority, title, description, deadline, notification, user_id
+    priority, title, description, deadline, repeatable, user_id
 ) values (
     1,
     'Learn SpringBoot!',
@@ -61,7 +61,7 @@ insert into jobs(
     2
 );
 insert into jobs(
-    priority, title, description, deadline, notification, user_id
+    priority, title, description, deadline, repeatable, user_id
 ) values (
     1,
     'Learn Java1!',
@@ -73,7 +73,7 @@ insert into jobs(
 );
 
 insert into jobs(
-    priority, title, description, deadline, notification, user_id
+    priority, title, description, deadline, repeatable, user_id
 ) values (
     1,
     'Learn Java2!',
@@ -85,7 +85,7 @@ insert into jobs(
 );
 
 insert into jobs(
-    priority, title, description, deadline, notification, ended, user_id
+    priority, title, description, deadline, repeatable, ended, user_id
 ) values (
     1,
     'Learn Java3!',
@@ -98,7 +98,7 @@ insert into jobs(
 );
 
 insert into jobs(
-    priority, title, description, deadline, notification, ended, user_id
+    priority, title, description, deadline, repeatable, ended, user_id
 ) values (
     1,
     'Learn Java4!',

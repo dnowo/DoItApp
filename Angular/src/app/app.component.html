@@ -1,8 +1,8 @@
 <header>
   <div class="container">
-    <nav class="navbar ml-auto">
+    <nav class="navbar test">
       <div class="row">
-        <div class="col-lg-3 padding">
+        <div class="col-lg-3 col-sm-3 col-md-3 padding">
           <a id="home" class="hoverable" href="/home">
             <button mat-fab
                     color="primary"
@@ -13,7 +13,7 @@
           </a>
         </div>
 
-        <div class="col-lg-3 padding" *ngIf="userLogged">
+        <div class="col-lg-3 col-sm-3 col-md-3 padding" *ngIf="userLogged">
           <a id="profile" class="hoverable" href="/profile">
             <button mat-fab
                     color="primary"
@@ -24,7 +24,7 @@
           </a>
         </div>
 
-        <div class="col-lg-3 padding" *ngIf="!userLogged">
+        <div class="col-lg-3 col-sm-3 col-md-3 padding mx-5" *ngIf="!userLogged">
           <a id="login" class="hoverable" href="/login">
             <button mat-fab
                     color="primary"
@@ -35,7 +35,7 @@
           </a>
         </div>
 
-        <div class="col-lg-3 padding" *ngIf="!userLogged">
+        <div class="col-lg-3 col-sm-3 col-md-3 padding" *ngIf="!userLogged">
           <a id="register" class="hoverable" href="/register">
             <button mat-fab
                     color="primary"

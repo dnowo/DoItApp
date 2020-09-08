@@ -19,7 +19,6 @@ export class UserService {
     this.http.get<Job[]>(API + 'api/job/all' + '?page=' + page).subscribe(j => {
       if (j.length > 0){
         this.jobs = j;
-        console.log(j);
         this.jobSubject.next(j);
       }
     }, error => {
@@ -56,7 +55,7 @@ export class UserService {
       this.jobs[index].title = job.title;
       this.jobs[index].description = job.description;
       this.jobs[index].deadline = job.deadline;
-      this.jobs[index].notification = job.notification;
+      this.jobs[index].repeatable = job.repeatable;
       this.jobs[index].priority = job.priority;
       this.jobs[index].ended = job.ended;
       this.jobSubject.next(this.jobs);
@@ -93,7 +92,7 @@ export interface Job {
   title: string;
   description: string;
   deadline: Date;
-  notification: boolean;
+  repeatable: boolean;
   ended: boolean;
 }
 

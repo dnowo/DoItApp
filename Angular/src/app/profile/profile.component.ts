@@ -22,7 +22,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.jwtHelper.isTokenExpired(this.tokenService.getToken())) {
-      this.isLogged = false;
+      this.logout();
     } else {
       this.isLogged = true;
       this.getTokenExpirationDate();
@@ -37,11 +37,11 @@ export class ProfileComponent implements OnInit {
       }, error => {
         if (error.status === 401) {
           this.logout();
-          // TODO: or session expired
         }
       });
   }
-  getTokenExpirationDate(): void {
+
+  private getTokenExpirationDate(): void {
     const token = this.tokenService.getToken();
     const decodedToken = this.jwtHelper.decodeToken(token);
 
@@ -50,8 +50,10 @@ export class ProfileComponent implements OnInit {
     this.date = new Date(0);
     this.date.setUTCSeconds(decodedToken.exp);
   }
+
   logout(): void {
     this.tokenService.logout();
+    this.isLogged = false;
     window.location.href = '/login';
   }
 

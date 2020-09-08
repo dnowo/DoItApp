@@ -32,11 +32,10 @@ export class HomeComponent implements OnInit {
   oneJob: any;
   maxPage: number;
   isLogged: boolean;
-  notifyCheck: any;
-  notifyOnOff: any;
+
 
   form = new FormGroup({
-    notification: new FormControl('', [
+    repeatable: new FormControl('', [
       Validators.required
     ]),
     title: new FormControl('', [
@@ -61,7 +60,7 @@ export class HomeComponent implements OnInit {
     description: string;
     ended: boolean;
     id: number;
-    notification: boolean;
+    repeatable: boolean;
     priority: number;
     title: string;
   };
@@ -76,7 +75,6 @@ export class HomeComponent implements OnInit {
 
   getJobs(page: number): void {
     this.allJobs$ = this.userService.getAllJobs(page);
-    this.allJobs$.subscribe(data => console.log(data));
   }
 
   goNextPage(): void {
@@ -109,20 +107,19 @@ export class HomeComponent implements OnInit {
 
   deleteJob(job: Job): void {
     this.userService.deleteJob(job).subscribe(deleted => console.log(deleted));
-    console.log(job);
   }
 
   onSelect(j: Job): void {
     if (this.jobToAdd === null) {
       this.selectedJob = j;
       this.form.patchValue({
-        notification: j.notification,
+        repeatable: j.repeatable,
       });
     } else {
       this.jobToAdd = null;
       this.selectedJob = j;
       this.form.patchValue({
-        notification: j.notification,
+        repeatable: j.repeatable,
       });
     }
   }
@@ -141,7 +138,7 @@ export class HomeComponent implements OnInit {
         title: 'Type in title...',
         description: 'Description...',
         priority: 0,
-        notification: false,
+        repeatable: false,
         deadline: null,
         ended: false,
       });
@@ -159,7 +156,7 @@ export class HomeComponent implements OnInit {
         title: 'Type in title...',
         description: 'Description...',
         priority: 0,
-        notification: false,
+        repeatable: false,
         deadline: null,
         ended: false,
       });
@@ -172,7 +169,7 @@ export class HomeComponent implements OnInit {
       description: string;
       ended: boolean;
       id: number;
-      notification: boolean;
+      repeatable: boolean;
       priority: number;
       title: string;
     };
@@ -180,8 +177,9 @@ export class HomeComponent implements OnInit {
     job.priority = this.form.value.priority;
     job.deadline = this.form.value.deadline;
     job.description = this.form.value.description;
-    job.notification = this.form.value.notification;
+    job.repeatable = this.form.value.repeatable;
     return job;
+
   }
 
   finishJob(j: Job): void {
@@ -191,9 +189,8 @@ export class HomeComponent implements OnInit {
     this.jobAddEdit = null;
   }
 
-  offNotification(j: Job): void {
-    this.notifyOnOff = !this.notifyOnOff;
-    j.notification = !j.notification;
+  offRepeatable(j: Job): void {
+    j.repeatable = !j.repeatable;
     this.userService.editJob(j).subscribe(job => console.log(job));
     this.selectedJob = null;
     this.jobAddEdit = null;
@@ -201,21 +198,5 @@ export class HomeComponent implements OnInit {
 
   openErrDialog(): void {
 
-  }
-
-  notify(): void {
-    this.notifyCheck = interval(5000)
-      .subscribe((val) => {
-        this.userService.getAllJobsUnsorted();
-        this.userService.jobsUnsorted.filter(vale => {
-          if (vale.ended === true && vale.notification === true) {
-            const sound = new Howl({
-              src: ['/assets/notify.mp3']
-            });
-            sound.play();
-            this.offNotification(vale);
-          }
-        });
-      });
   }
 }

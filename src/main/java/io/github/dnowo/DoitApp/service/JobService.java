@@ -4,6 +4,7 @@ import io.github.dnowo.DoitApp.model.Job;
 import io.github.dnowo.DoitApp.model.User;
 import io.github.dnowo.DoitApp.repository.JobRepository;
 import io.github.dnowo.DoitApp.verify.DateVerifier;
+import io.github.dnowo.DoitApp.verify.RepeatVerifier;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -19,6 +20,7 @@ public class JobService {
     private static final int PAGE_SIZE = 6;
     private final JobRepository jobRepository;
     private final DateVerifier dateVerifier;
+    private final RepeatVerifier repeatVerifier;
 
     public List<Job> getJobs(int page, User user){
         List<Job> forUser = jobRepository.findAll(PageRequest.of(page,
@@ -30,7 +32,8 @@ public class JobService {
                 .filter(job ->
                         job.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
-        dateVerifier.verifyJobTime(forUser);
+        forUser = dateVerifier.verifyJobTime(forUser);
+        forUser = repeatVerifier.verifyRepeatableJobs(forUser);
         return forUser;
     }
 
@@ -40,7 +43,7 @@ public class JobService {
         jobToEdit.setEnded(job.getEnded());
         jobToEdit.setDeadline(job.getDeadline());
         jobToEdit.setDescription(job.getDescription());
-        jobToEdit.setNotification(job.getNotification());
+        jobToEdit.setRepeatable(job.getRepeatable());
         jobToEdit.setPriority(job.getPriority());
         jobToEdit.setTitle(job.getTitle());
         return jobToEdit;

@@ -24,7 +24,7 @@ public class Job {
     @Column
     private String description;
     private LocalDateTime deadline;
-    private Boolean notification;
+    private Boolean repeatable;
 
     @Column(columnDefinition = "boolean default false")
     private Boolean ended;
@@ -41,7 +41,7 @@ public class Job {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", deadline=" + deadline +
-                ", notification=" + notification +
+                ", notification=" + repeatable +
                 ", ended=" + ended +
                 '}';
     }

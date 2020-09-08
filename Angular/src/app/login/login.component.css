@@ -31,3 +31,7 @@ mat-card {
   display: flex;
   justify-content: flex-end;
 }
+.test{
+  display: flex;
+  justify-content: center;
+}

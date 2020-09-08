@@ -8,6 +8,7 @@ import io.github.dnowo.DoitApp.repository.UserRepository;
 import io.github.dnowo.DoitApp.security.LoginAuth;
 import io.github.dnowo.DoitApp.security.MessageResponse;
 import io.github.dnowo.DoitApp.security.SignupAuth;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -20,16 +21,19 @@ import java.util.HashSet;
 import java.util.Set;
 
 @RestController
+@RequiredArgsConstructor
 public class LoginController {
 
-    @Autowired
     UserRepository userRepository;
-
-    @Autowired
     RoleRepository roleRepository;
+    BCryptPasswordEncoder passwordEncoder;
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    public LoginController(UserRepository userRepository, RoleRepository roleRepository, BCryptPasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @PostMapping("/login")
     public void login(@Valid @RequestBody LoginAuth loginAuth) {
@@ -83,6 +87,5 @@ public class LoginController {
         user.setRoles(roles);
         userRepository.save(user);
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-
     }
 }

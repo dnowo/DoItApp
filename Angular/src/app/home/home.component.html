@@ -1,5 +1,5 @@
-<div class="container" *ngIf="!isLogged">
-  <center><h3 class="font-gothic">You have to be logged in to see your jobs!</h3></center>
+<div *ngIf="!isLogged">
+  <h3 class="font-gothic">You have to be logged in to see your jobs!</h3>
 </div>
 <div class="container" *ngIf="isLogged">
   <table class="table borderless font-gothic" >
@@ -8,12 +8,12 @@
     </caption>
     <thead class="table-striped">
     <tr>
-      <th scope="col">Action</th>
+      <th scope="col">Options</th>
       <th scope="col">Title</th>
       <th scope="col">Description</th>
       <th scope="col">Deadline</th>
       <th scope="col">Priority</th>
-      <th scope="col">Notification</th>
+      <th scope="col">Repeatable</th>
     </tr>
     </thead>
     <tbody>
@@ -32,7 +32,7 @@
             <li><a [ngClass]="j.ended ? 'isDisabled' : 'null'" (click)="j.ended ? openErrDialog() : finishJob(j)">Finish
               this job</a></li>
             <li class="divider"></li>
-            <li><a (click)="offNotification(j)">Turn {{ j.notification ? 'Off' : 'On' }} notification</a></li>
+            <li><a (click)="offRepeatable(j)">Repeat:  {{ j.repeatable ? 'No' : 'Yes' }}</a></li>
             <li><a (click)="deleteJob(j)">Delete this job</a></li>
           </ul>
         </div>
@@ -43,7 +43,7 @@
           [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.deadline | slice: 0 : 16 | split:"T"}}</td>
       <td
         [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.priority === 1 ? 'High' : (j.priority === 2 ? 'Medium' : (j.priority === 3 ? 'Low' : 'None'))}}</td>
-      <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.notification ? 'Yes' : 'No'}}</td>
+      <td [ngClass]="j.ended ? 'strikethrough' : 'null'">{{ j.repeatable ? 'Yes' : 'No'}}</td>
 
     </tr>
     </tbody>
@@ -122,12 +122,16 @@
         </div>
 
         <div class="form-row">
-          <div class="col-md-12 mb-5">
+          <div class="col-md-12">
             <mat-checkbox
-              formControlName="notification"
-              class="form-check-input" type="checkbox" value="" id="notificationCheck">Notification
+              formControlName="repeatable"
+              class="form-check-input text-white font-gothic"
+              type="checkbox"
+              id="repeatableCheck">
+              Repeatable
             </mat-checkbox>
           </div>
+
           <div class="form-row">
             <div class="col-md-5 mb-5">
               <button mat-raised-button [disabled]="!form.valid" color="accent" type="submit" style="width:100%">Submit
@@ -146,7 +150,10 @@
 </section>
 
 <section id="addPanel">
-  <button (click)="onAdd()" *ngIf="isLogged" class="float" mat-fab aria-label="Add a new job">
+  <button (click)="onAdd()"
+          *ngIf="isLogged"
+          class="float"
+          mat-fab aria-label="Add a new job">
     <mat-icon>add</mat-icon>
   </button>
 
@@ -197,18 +204,25 @@
         </div>
 
         <div class="form-row">
-          <div class="col-md-12 mb-5">
+          <div class="col-md-12">
             <mat-checkbox
-              formControlName="notification"
-              class="form-check-input" type="checkbox" value="" id="notificationCheckAdd">Notification
+              formControlName="repeatable"
+              class="form-check-input text-white font-gothic"
+              type="checkbox"
+              id="repeatableCheckAdd">
+              Repeatable
             </mat-checkbox>
           </div>
         </div>
 
         <div class="form-row">
           <div class="col-md-5 mb-5">
-            <button mat-raised-button [disabled]="!form.valid" color="accent" type="submit" style="width:100%">Submit
-              me!
+            <button mat-raised-button
+                    [disabled]="!form.valid"
+                    color="accent"
+                    type="submit"
+                    style="width:100%">
+              Submit me!
             </button>
           </div>
           <div class="col-md-5 mb-5">

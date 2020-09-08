@@ -1,7 +1,7 @@
 package io.github.dnowo.DoitApp.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -16,13 +16,14 @@ public class JsonObjectAuthFilter extends UsernamePasswordAuthenticationFilter {
 
     private final ObjectMapper objectMapper;
 
+    @Autowired
     public JsonObjectAuthFilter(ObjectMapper objectMapper) {
         this.objectMapper = objectMapper;
     }
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        try{
+        try {
             BufferedReader bufferedReader = request.getReader();
             StringBuilder stringBuilder = new StringBuilder();
             String line;
@@ -33,11 +34,10 @@ public class JsonObjectAuthFilter extends UsernamePasswordAuthenticationFilter {
 
             LoginAuth loginAuth = objectMapper.readValue(stringBuilder.toString(), LoginAuth.class);
             UsernamePasswordAuthenticationToken token =
-                    new UsernamePasswordAuthenticationToken(loginAuth.getUsername(), loginAuth.getPassword());
-
+                    new UsernamePasswordAuthenticationToken(loginAuth.getUsername(),loginAuth.getPassword());
             setDetails(request, token);
             return this.getAuthenticationManager().authenticate(token);
-        }catch (IOException e){
+        } catch (IOException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
