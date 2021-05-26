@@ -22,18 +22,19 @@ public class JobService {
     private final DateVerifier dateVerifier;
     private final RepeatVerifier repeatVerifier;
 
-    public List<Job> getJobs(int page, User user){
+    public List<Job> getJobs(int page, User user) {
         List<Job> forUser = jobRepository.findAll(PageRequest.of(page,
-                        PAGE_SIZE,
-                        Sort.by(Sort.Order.asc("ended"),
-                                Sort.Order.desc("deadline"),
-                                Sort.Order.asc("priority"))))
+                PAGE_SIZE,
+                Sort.by(Sort.Order.asc("ended"),
+                        Sort.Order.desc("deadline"),
+                        Sort.Order.asc("priority"))))
                 .stream()
                 .filter(job ->
                         job.getUser().getId().equals(user.getId()))
                 .collect(Collectors.toList());
         forUser = dateVerifier.verifyJobTime(forUser);
         forUser = repeatVerifier.verifyRepeatableJobs(forUser);
+
         return forUser;
     }
 
@@ -46,6 +47,7 @@ public class JobService {
         jobToEdit.setRepeatable(job.getRepeatable());
         jobToEdit.setPriority(job.getPriority());
         jobToEdit.setTitle(job.getTitle());
+
         return jobToEdit;
     }
 
@@ -53,15 +55,18 @@ public class JobService {
         return jobRepository.getJobById(id);
     }
 
-    public List<Job> findAllUnsorted() { return dateVerifier.verifyJobTime(jobRepository.findAll()); }
+    public List<Job> findAllUnsorted() {
+        return dateVerifier.verifyJobTime(jobRepository.findAll());
+    }
 
     public Job addJob(Job job) {
         return jobRepository.save(job);
     }
 
+    @Transactional
     public void deleteJob(Long id, User user) {
         Job job = jobRepository.findById(id).orElseThrow();
-        if (user.getId() == job.getUser().getId()) {
+        if (user.getId().equals(job.getUser().getId())) {
             jobRepository.deleteById(id);
         } else {
             throw new RuntimeException("Cannot delete this job!");

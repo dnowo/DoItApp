@@ -27,6 +27,11 @@ public class JobController {
                              @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated){
         int pageNumber = page >= 0 ? page : 0;
         User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
+        System.out.println(pageNumber);
+        System.out.println(pageNumber);
+        System.out.println(pageNumber);
+        System.out.println(pageNumber);
+        System.out.println(pageNumber);
         return jobService.getJobs(pageNumber, user);
     }
 
