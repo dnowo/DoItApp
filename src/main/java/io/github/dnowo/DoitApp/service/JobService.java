@@ -60,6 +60,7 @@ public class JobService {
     }
 
     public Job addJob(Job job) {
+        job.setEnded(false);
         return jobRepository.save(job);
     }
 
