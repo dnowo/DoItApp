@@ -25,10 +25,9 @@ public class Job {
     @Lob
     @Column
     private String description;
-    @JsonFormat(shape= JsonFormat.Shape.STRING, pattern="YYYY-MM-dd'T'HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd'T'HH:mm:ss")
     private LocalDateTime deadline;
     private Boolean repeatable;
-
     @Column(columnDefinition = "boolean default false")
     private Boolean ended;
 
