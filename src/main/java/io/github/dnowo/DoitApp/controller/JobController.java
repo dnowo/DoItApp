@@ -2,6 +2,7 @@ package io.github.dnowo.DoitApp.controller;
 
 import io.github.dnowo.DoitApp.model.Job;
 import io.github.dnowo.DoitApp.model.User;
+import io.github.dnowo.DoitApp.model.dto.JobPagesDto;
 import io.github.dnowo.DoitApp.repository.UserRepository;
 import io.github.dnowo.DoitApp.service.JobService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,11 +24,10 @@ public class JobController {
     }
 
     @GetMapping("/api/job/all")
-    public List<Job> getJobs(@RequestParam(required = false) int page,
-                             @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated){
-        int pageNumber = page >= 0 ? page : 1;
+    public JobPagesDto getJobs(@RequestParam(required = false) int page,
+                               @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated){
+        int pageNumber = page < 1 ? 0 : page;
         User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
-
         return jobService.getJobs(pageNumber, user);
     }
 

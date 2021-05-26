@@ -3,6 +3,7 @@ package io.github.dnowo.DoitApp.model;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
@@ -13,6 +14,7 @@ import java.time.LocalDateTime;
 @Setter
 @Table(name = "jobs")
 @RequiredArgsConstructor
+@ToString
 public class Job {
 
     @Id
