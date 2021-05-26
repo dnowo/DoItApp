@@ -26,7 +26,7 @@ public class JobController {
     @GetMapping("/api/job/all")
     public JobPagesDto getJobs(@RequestParam(required = false) int page,
                                @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated){
-        int pageNumber = page < 1 ? 0 : page;
+        int pageNumber = page < 1 ? 1 : page;
         User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
         return jobService.getJobs(pageNumber, user);
     }

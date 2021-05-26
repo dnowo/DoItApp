@@ -31,8 +31,7 @@ public class JobService {
         System.out.println("page " + page);
         long totalItems = jobRepository.findAll().stream().filter(job ->
                 job.getUser().getId().equals(user.getId())).count();
-        if (totalItems <= PAGE_SIZE)
-            page = 1;
+
         Pageable pageable = PageRequest.of(page, PAGE_SIZE,
                 Sort.by(Sort.Order.desc("deadline"),
                         Sort.Order.asc("priority")));
