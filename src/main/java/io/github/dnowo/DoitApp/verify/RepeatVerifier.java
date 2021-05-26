@@ -19,7 +19,6 @@ public class RepeatVerifier {
     }
 
     public List<Job> verifyRepeatableJobs(List<Job> toVerify) {
-
         for (Job j : toVerify) {
             if (j.getRepeatable() && LocalDateTime.now().isAfter(j.getDeadline())) {
                 saveDate(j);
@@ -29,10 +28,9 @@ public class RepeatVerifier {
     }
 
     @Transactional
-    private Job saveDate(Job job){
+    private void saveDate(Job job){
         Job editedJob = jobRepository.findById(job.getId()).orElseThrow();
-        job.setDeadline(job.getDeadline().plusDays(1));
-        jobRepository.save(job);
-        return editedJob;
+        editedJob.setDeadline(job.getDeadline().plusDays(1));
+        jobRepository.save(editedJob);
     }
 }

@@ -7,6 +7,7 @@ import io.github.dnowo.DoitApp.repository.JobRepository;
 import io.github.dnowo.DoitApp.verify.DateVerifier;
 import io.github.dnowo.DoitApp.verify.RepeatVerifier;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 @RequiredArgsConstructor
 public class JobService {
     private static final int PAGE_SIZE = 6;
@@ -54,9 +56,9 @@ public class JobService {
         jobPagesDto.setCurrentPage(Long.parseLong("" + page));
         jobPagesDto.setTotalItems(totalItems);
         jobPagesDto.setTotalPages(totalPages);
-        System.out.println("------------------------------");
-        System.out.println(jobPagesDto.toString());
-//        System.out.println(user.toString());
+
+        log.info(jobPagesDto.toString());
+        log.info(user.toString());
 
         return jobPagesDto;
     }
