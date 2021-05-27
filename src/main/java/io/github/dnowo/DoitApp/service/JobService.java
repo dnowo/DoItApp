@@ -15,9 +15,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.math.RoundingMode;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -29,8 +27,6 @@ public class JobService {
     private final RepeatVerifier repeatVerifier;
 
     public JobPagesDto getJobs(int page, User user) {
-        System.out.println("Page " + page);
-
         Pageable pageable = PageRequest.of(page, PAGE_SIZE,
                 Sort.by(Sort.Order.desc("deadline"),
                         Sort.Order.asc("priority")));
@@ -76,7 +72,6 @@ public class JobService {
 
     public Job addJob(Job job) {
         job.setEnded(false);
-        System.out.println(job.toString());
         return jobRepository.save(job);
     }
 

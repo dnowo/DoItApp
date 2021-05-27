@@ -5,7 +5,7 @@ import io.github.dnowo.DoitApp.model.User;
 import io.github.dnowo.DoitApp.model.dto.JobPagesDto;
 import io.github.dnowo.DoitApp.repository.UserRepository;
 import io.github.dnowo.DoitApp.service.JobService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -13,20 +13,16 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class JobController {
     private final JobService jobService;
     private final UserRepository userRepository;
-
-    @Autowired
-    public JobController(JobService jobService, UserRepository userRepository) {
-        this.jobService = jobService;
-        this.userRepository = userRepository;
-    }
 
     @GetMapping("/api/job/all")
     public JobPagesDto getJobs(@RequestParam(defaultValue = "0") int page,
                                @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated){
         User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
+
         return jobService.getJobs(page, user);
     }
 

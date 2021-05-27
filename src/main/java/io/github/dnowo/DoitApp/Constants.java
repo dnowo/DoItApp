@@ -3,7 +3,7 @@ package io.github.dnowo.DoitApp;
 import java.time.format.DateTimeFormatter;
 
 public class Constants {
-    public static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("YYYY-MM-dd'T'HH:mm");
+    public static DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
 
     /**
      * For auth login purpose.
