@@ -16,12 +16,18 @@ public class RepeatVerifier {
 
     @Transactional
     public List<Job> verifyRepeatableJobs(List<Job> toVerify) {
+        LocalDateTime now = LocalDateTime.now();
+
         toVerify.forEach(j -> {
-            if (j.getRepeatable() && LocalDateTime.now().isAfter(j.getDeadline())) {
+            if (j.getRepeatable() && now.isAfter(j.getDeadline())) {
                 saveDate(j);
             }
         });
-
+        System.out.println(now);
+        System.out.println(now);
+        System.out.println(now);
+        System.out.println(now);
+        System.out.println(now);
         return toVerify;
     }
 
