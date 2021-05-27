@@ -8,6 +8,7 @@ import io.github.dnowo.DoitApp.verify.DateVerifier;
 import io.github.dnowo.DoitApp.verify.RepeatVerifier;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -28,33 +29,23 @@ public class JobService {
     private final RepeatVerifier repeatVerifier;
 
     public JobPagesDto getJobs(int page, User user) {
-        System.out.println("page " + page);
-        long totalItems = jobRepository.findAll().stream().filter(job ->
-                job.getUser().getId().equals(user.getId())).count();
+        System.out.println("Page " + page);
 
         Pageable pageable = PageRequest.of(page, PAGE_SIZE,
                 Sort.by(Sort.Order.desc("deadline"),
                         Sort.Order.asc("priority")));
 
-        List<Job> forUser = jobRepository.findAll(pageable)
-                .stream()
-                .filter(job ->
-                        job.getUser().getId().equals(user.getId()))
-                .collect(Collectors.toList());
+        Page<Job> jobWithPages = jobRepository.findAllByUserId(user.getId(), pageable);
+        List<Job> forUser = jobWithPages.getContent();
 
         forUser = dateVerifier.verifyJobTime(forUser);
         forUser = repeatVerifier.verifyRepeatableJobs(forUser);
 
-
-        long totalPages = (long) (Math.ceil((double) totalItems / (double) PAGE_SIZE)) - 1L;
-        if (totalPages < 1)
-            totalPages = 0;
-
         JobPagesDto jobPagesDto = new JobPagesDto();
         jobPagesDto.setJobs(forUser);
-        jobPagesDto.setCurrentPage(Long.parseLong("" + page));
-        jobPagesDto.setTotalItems(totalItems);
-        jobPagesDto.setTotalPages(totalPages);
+        jobPagesDto.setCurrentPage(Long.valueOf(jobWithPages.getNumber() + ""));
+        jobPagesDto.setTotalItems(jobWithPages.getTotalElements());
+        jobPagesDto.setTotalPages(Long.valueOf(jobWithPages.getTotalPages() + ""));
 
         log.info(jobPagesDto.toString());
         log.info(user.toString());

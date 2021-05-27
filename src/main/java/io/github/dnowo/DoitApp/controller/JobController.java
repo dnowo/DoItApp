@@ -24,11 +24,10 @@ public class JobController {
     }
 
     @GetMapping("/api/job/all")
-    public JobPagesDto getJobs(@RequestParam(required = false) int page,
+    public JobPagesDto getJobs(@RequestParam(defaultValue = "0") int page,
                                @AuthenticationPrincipal UsernamePasswordAuthenticationToken userAuthenticated){
-        int pageNumber = page < 1 ? 1 : page;
         User user = userRepository.findByUsername(userAuthenticated.getPrincipal().toString());
-        return jobService.getJobs(pageNumber, user);
+        return jobService.getJobs(page, user);
     }
 
     @GetMapping("/api/job/unsorted")
