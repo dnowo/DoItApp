@@ -30,5 +30,6 @@ public class RepeatVerifier {
     private void saveDate(Job job){
         Job editedJob = jobRepository.findById(job.getId()).orElseThrow();
         editedJob.setDeadline(job.getDeadline().plusDays(1));
+        editedJob.setEnded(false);
     }
 }
