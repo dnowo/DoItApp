@@ -17,7 +17,7 @@ public class DateVerifier {
 
     @Transactional
     public List<Job> verifyJobTime(List<Job> jobsFromDatabase) {
-        LocalDateTime dateTimeNow = LocalDateTime.now();
+        LocalDateTime dateTimeNow = LocalDateTime.now().plusHours(2);
         String time = dateTimeNow.format(Constants.DATE_FORMAT);
         LocalDateTime localDateTimeNow = LocalDateTime.parse(time);
 
