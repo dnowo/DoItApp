@@ -3,9 +3,7 @@ Do it app, is an app where anyone can sign up, and start adding works daily / mo
 
 # New Features!
 
-  - Repeatable jobs!
-  - Login and register a new account!
-  - Pagination!
+LIVE: https://doitapp-fe.herokuapp.com/
 
 #### Features
 
@@ -14,6 +12,9 @@ Do it app, is an app where anyone can sign up, and start adding works daily / mo
   - Check your profile data.
   - Sorting by priority, end-date, and finished jobs.
   - Turn ON repeatable job.
+  - Repeatable jobs!
+  - Login and register a new account!
+  - Pagination!
   
 
 ### Technologies
